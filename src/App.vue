@@ -9,37 +9,24 @@
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav class="ml-auto">
-          <b-nav-item-dropdown text="Archivos" right>
-            <b-dropdown-item href="#"
-              ><router-link to="/archivos/choferes"
-                >Choferes</router-link
-              ></b-dropdown-item
+          <b-nav-item-dropdown
+            v-for="item in menu"
+            :key="item.id"
+            :text="item.label"
+            right
+          >
+            <b-dropdown-item
+              href="#"
+              v-for="subitem in item.options"
+              :key="subitem.id"
+              ><router-link :to="subitem.link">{{
+                subitem.label
+              }}</router-link></b-dropdown-item
             >
-            <b-dropdown-item href="#"
-              ><router-link to="/archivos/vehiculos"
-                >Vehículos</router-link
-              ></b-dropdown-item
-            >
-          </b-nav-item-dropdown>
-          <b-nav-item-dropdown text="Reportes" right>
-            <b-dropdown-item href="#"
-              ><router-link to="/reportes/garantiafecha"
-                >Vencimiento de garantías por fecha</router-link
-              ></b-dropdown-item
-            >
-          </b-nav-item-dropdown>
-          <b-nav-item-dropdown text="Usuarios" right>
-            <b-dropdown-item href="#"
-              ><router-link to="/usuarios/usuarios"
-                >Gestión de Usuarios</router-link
-              ></b-dropdown-item
-            >
-            <b-dropdown-item href="#"
-              ><router-link to="/usuarios/clave"
-                >Cambiar mi Clave</router-link
-              ></b-dropdown-item
-            >
-            <b-dropdown-item href="#"
+            <b-dropdown-item
+              href="#"
+              v-if="item.label == 'Usuarios'"
+              @click="cerrarSesion"
               ><b-icon icon="door-closed"></b-icon>&nbsp;Cerrar
               Sesión</b-dropdown-item
             >
@@ -54,6 +41,66 @@
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  name: "App",
+  data() {
+    return {
+      menu: [
+        {
+          id: 1,
+          label: "Archivos",
+          options: [
+            {
+              id: 1,
+              label: "Choferes",
+              link: "/archivos/choferes",
+            },
+            {
+              id: 2,
+              label: "Vehículos",
+              link: "/archivos/vehiculos",
+            },
+          ],
+        },
+        {
+          id: 2,
+          label: "Reportes",
+          options: [
+            {
+              id: 1,
+              label: "Vencimientos de Garantía por Fecha",
+              link: "/reportes/garantiafecha",
+            },
+          ],
+        },
+        {
+          id: 3,
+          label: "Usuarios",
+          options: [
+            {
+              id: 1,
+              label: "Gestión de Usuarios",
+              link: "/usuarios/usuarios",
+            },
+            {
+              id: 2,
+              label: "Cambiar mi Clave",
+              link: "/usuarios/clave",
+            },
+          ],
+        },
+      ],
+    };
+  },
+  methods: {
+    cerrarSesion() {
+      alert("cerrar sesión");
+    },
+  },
+};
+</script>
 
 <style>
 body {
