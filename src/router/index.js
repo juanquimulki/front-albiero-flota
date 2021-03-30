@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
+import Dashboard from "../views/Dashboard";
 import Choferes from "../views/archivos/Choferes";
 import Vehiculos from "../views/archivos/Vehiculos";
 import GarantiaFecha from "../views/reportes/GarantiaFecha";
@@ -10,6 +11,11 @@ import Usuarios from "../views/usuarios/Usuarios";
 Vue.use(VueRouter);
 
 const routes = [
+  {
+    path: "/",
+    name: "dashboard",
+    component: Dashboard,
+  },
   {
     path: "/archivos/choferes",
     name: "choferes",

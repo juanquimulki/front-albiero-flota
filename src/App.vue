@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-navbar toggleable="lg" type="dark" variant="info" fixed="top">
-      <b-navbar-brand href="#">
+      <b-navbar-brand href="/">
         <span style="margin-left: 10px">Mantenimiento de Flota</span>
       </b-navbar-brand>
 
@@ -36,7 +36,6 @@
     </b-navbar>
 
     <div id="content">
-      Hola Mundo!<br />
       <router-view></router-view>
     </div>
   </div>
