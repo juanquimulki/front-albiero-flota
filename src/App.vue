@@ -43,56 +43,22 @@
 </template>
 
 <script>
+import Data from "./data/data";
+
 export default {
   name: "App",
+  mixins: [Data],
   data() {
     return {
-      menu: [
-        {
-          id: 1,
-          label: "Archivos",
-          options: [
-            {
-              id: 1,
-              label: "Choferes",
-              link: "/archivos/choferes",
-            },
-            {
-              id: 2,
-              label: "Vehículos",
-              link: "/archivos/vehiculos",
-            },
-          ],
-        },
-        {
-          id: 2,
-          label: "Reportes",
-          options: [
-            {
-              id: 1,
-              label: "Vencimientos de Garantía por Fecha",
-              link: "/reportes/garantiafecha",
-            },
-          ],
-        },
-        {
-          id: 3,
-          label: "Usuarios",
-          options: [
-            {
-              id: 1,
-              label: "Gestión de Usuarios",
-              link: "/usuarios/usuarios",
-            },
-            {
-              id: 2,
-              label: "Cambiar mi Clave",
-              link: "/usuarios/clave",
-            },
-          ],
-        },
-      ],
+      endpoint: "menu",
+      menu: [],
     };
+  },
+  created() {
+    this.getData(this.endpoint, null).then((response) => {
+      this.menu = response;
+      //this.menu = this.menu.filter((item) => item.options.length > 0);
+    });
   },
   methods: {
     cerrarSesion() {
