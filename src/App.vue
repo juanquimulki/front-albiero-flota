@@ -10,6 +10,7 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav class="ml-auto">
           <b-nav-item-dropdown
+            class="mimenu"
             v-for="item in menu"
             :key="item.id"
             :text="item.label"
@@ -19,7 +20,7 @@
               href="#"
               v-for="subitem in item.options"
               :key="subitem.id"
-              ><router-link :to="subitem.link">{{
+              ><router-link :to="subitem.link" class="miopcion">{{
                 subitem.label
               }}</router-link></b-dropdown-item
             >
@@ -27,6 +28,7 @@
               href="#"
               v-if="item.label == 'Usuarios'"
               @click="cerrarSesion"
+              class="miopcion"
               ><b-icon icon="door-closed"></b-icon>&nbsp;Cerrar
               Sesión</b-dropdown-item
             >
@@ -76,18 +78,19 @@ nav.navbar {
   box-shadow: 0 0.25rem 0.25rem rgba(0, 0, 0, 0.25),
     inset 0 -1px 5px rgba(0, 0, 0, 0.25);
 }
-#content {
-  padding: 30px;
-  padding-top: 100px;
-}
-a.nav-link {
+li.mimenu a {
   color: white !important;
 }
-a {
+a.dropdown-item a.miopcion {
   color: black !important;
   text-decoration: none !important;
 }
-a.navbar-brand {
-  color: white !important;
+li.miopcion a {
+  color: black !important;
+  text-decoration: none !important;
+}
+#content {
+  padding: 30px;
+  padding-top: 100px;
 }
 </style>
