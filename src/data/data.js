@@ -27,7 +27,7 @@ export default {
     },
     postData(endpoint, payload) {
       let self = this;
-      return new Promise(function (resolve) {
+      return new Promise(function (resolve,reject) {
         _axios
           .post(endpoint, payload, {
             //headers: { Authorization: self.authorization },
@@ -37,6 +37,7 @@ export default {
           })
           .catch((err) => {
             self.apiErrors(err.response.data);
+            reject();
           });
       });
     },
