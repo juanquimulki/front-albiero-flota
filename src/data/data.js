@@ -27,7 +27,7 @@ export default {
     },
     postData(endpoint, payload) {
       let self = this;
-      return new Promise(function (resolve,reject) {
+      return new Promise(function (resolve, reject) {
         _axios
           .post(endpoint, payload, {
             //headers: { Authorization: self.authorization },
@@ -80,19 +80,28 @@ export default {
           switch (err.code) {
             case 1451:
               makeToast(
-                "No puede eliminar un registro 'principal' en uso, porque violaría la integridad de la base de datos.",
+                "No puedes eliminar un registro 'maestro' en uso, porque violaría la integridad de la base de datos.",
+                "danger"
+              );
+              break;
+            case 1062:
+              makeToast(
+                "No puedes guardar un registro que provoque una entrada duplicada.",
                 "danger"
               );
               break;
             default:
-              makeToast(err.message + ": " + err.description, "danger");
+              makeToast(
+                err.message + " (" + err.code + "): " + err.description,
+                "danger"
+              );
           }
           break;
         case 401:
           switch (err.code) {
             case 1:
               makeToast(
-                "Su sesión ha expirado. Por favor, inicie nuevamente.",
+                "Tu sesión ha expirado. Por favor, iniciá nuevamente.",
                 "danger"
               );
               this.$session.destroy();

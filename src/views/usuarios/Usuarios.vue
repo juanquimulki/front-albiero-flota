@@ -50,15 +50,7 @@
             </b-tabs>
 
             <div class="botonera">
-              <b-overlay
-                :show="showOverlay"
-                rounded
-                opacity="0.6"
-                spinner-small
-                class="d-inline-block"
-              >
-                <b-button @click="guardar">Guardar</b-button>
-              </b-overlay>
+              <b-button @click="guardar">Guardar</b-button>
               <b-button variant="danger">Eliminar</b-button>
               <b-button variant="outline-danger">Nuevo</b-button>
             </div>
@@ -138,11 +130,8 @@ export default {
       this.showOverlay = true;
       this.postData(this.endpoint, this.form)
         .then(() => {
-          makeToast("¡Registro guardado con éxito!", "success");
+          makeToast("¡Se ha guardado el registro!", "success");
           this.buscarRegistros();
-        })
-        .catch((e) => {
-          console.log(e);
         })
         .finally(() => {
           this.showOverlay = false;
@@ -162,11 +151,16 @@ export default {
       });
     },
     buscarRegistros() {
-      this.getData(this.endpoint, null).then((response) => {
-        this.usuarios = response;
-        console.log(JSON.stringify(this.usuarios));
-        //this.menu = this.menu.filter((item) => item.options.length > 0);
-      });
+      this.showOverlay = true;
+      this.getData(this.endpoint, null)
+        .then((response) => {
+          this.usuarios = response;
+          console.log(JSON.stringify(this.usuarios));
+          //this.menu = this.menu.filter((item) => item.options.length > 0);
+        })
+        .finally(() => {
+          this.showOverlay = false;
+        });
     },
   },
   created() {
