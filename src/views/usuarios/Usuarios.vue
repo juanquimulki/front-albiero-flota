@@ -60,7 +60,7 @@
                 @click="limpiar"
                 >Nuevo</b-button
               >
-              <b-button variant="danger" :disabled="btnClaveDes">
+              <b-button variant="danger" :disabled="btnClaveDes" @click="reestablecer">
                 <b-icon icon="key" aria-hidden="true"></b-icon> Reestablecer
                 Clave
               </b-button>
@@ -156,6 +156,22 @@ export default {
           this.delete();
         }
       });
+    },
+    reestablecer() {
+      this.showOverlay = true;
+      this.form.pass = "1234";
+      this.patchData(this.endpoint, this.form)
+        .then(() => {
+          makeToast("¡Se ha reestablecido la clave!", "success");
+          this.buscarRegistros();
+          this.limpiar();
+        })
+        .catch((e) => {
+          console.log(e);
+        })
+        .finally(() => {
+          this.showOverlay = false;
+        });
     },
     onRowSelected(item) {
       if (item[0]) {
