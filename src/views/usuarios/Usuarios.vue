@@ -60,7 +60,11 @@
                 @click="limpiar"
                 >Nuevo</b-button
               >
-              <b-button variant="danger" :disabled="btnClaveDes" @click="reestablecer">
+              <b-button
+                variant="danger"
+                :disabled="btnClaveDes"
+                @click="reestablecer"
+              >
                 <b-icon icon="key" aria-hidden="true"></b-icon> Reestablecer
                 Clave
               </b-button>
@@ -107,6 +111,7 @@
 
 <script>
 import Data from "../../data/data";
+
 import makeToast from "../../common/toast";
 import msgBoxConfirm from "../../common/confirm";
 
@@ -117,13 +122,6 @@ export default {
     return {
       endpoint: "usuario",
       usuarios: [],
-      formShow: true,
-      showOverlay: false,
-      form: {
-        id: "",
-        user: "",
-        name: "",
-      },
       fields: [
         {
           key: "id",
@@ -139,7 +137,16 @@ export default {
         },
       ],
 
+      form: {
+        id: "",
+        user: "",
+        name: "",
+      },
+      formShow: true,
+      showOverlay: false,
+
       selected: false,
+
       btnGuardarDes: false,
       btnEliminarDes: true,
       btnNuevoDes: false,
@@ -147,6 +154,9 @@ export default {
     };
   },
   methods: {
+    guardar() {
+      this.$refs.form.requestSubmit();
+    },
     nuevo() {
       this.limpiar();
     },
@@ -172,14 +182,6 @@ export default {
         .finally(() => {
           this.showOverlay = false;
         });
-    },
-    onRowSelected(item) {
-      if (item[0]) {
-        Object.assign(this.form, item[0]);
-        this.selected = true;
-      } else {
-        this.selected = false;
-      }
     },
     onSubmit(evt) {
       evt.preventDefault();
@@ -235,8 +237,23 @@ export default {
           this.showOverlay = false;
         });
     },
-    guardar() {
-      this.$refs.form.requestSubmit();
+    buscarRegistros() {
+      this.showOverlay = true;
+      this.getData(this.endpoint, null)
+        .then((response) => {
+          this.usuarios = response;
+        })
+        .finally(() => {
+          this.showOverlay = false;
+        });
+    },
+    onRowSelected(item) {
+      if (item[0]) {
+        Object.assign(this.form, item[0]);
+        this.selected = true;
+      } else {
+        this.selected = false;
+      }
     },
     limpiar() {
       this.form = {
@@ -249,16 +266,6 @@ export default {
         this.formShow = true;
       });
       this.$refs.selectableTable.clearSelected();
-    },
-    buscarRegistros() {
-      this.showOverlay = true;
-      this.getData(this.endpoint, null)
-        .then((response) => {
-          this.usuarios = response;
-        })
-        .finally(() => {
-          this.showOverlay = false;
-        });
     },
   },
   created() {
@@ -293,13 +300,11 @@ export default {
 }
 .botonera button {
   margin-left: 5px;
+  margin-bottom: 5px;
 }
 .alert {
   font-size: 10pt;
   padding: 10px;
   text-align: right;
-}
-.botonera button {
-  margin-bottom: 5px;
 }
 </style>
