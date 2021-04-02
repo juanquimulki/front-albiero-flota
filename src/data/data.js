@@ -59,7 +59,7 @@ export default {
     },
     deleteData(endpoint, payload) {
       let self = this;
-      return new Promise(function (resolve) {
+      return new Promise(function (resolve, reject) {
         _axios
           .delete(endpoint, {
             data: payload,
@@ -70,6 +70,7 @@ export default {
           })
           .catch((err) => {
             self.apiErrors(err.response.data);
+            reject(err.response.data.description);
           });
       });
     },
