@@ -7,7 +7,7 @@
         <b-card>
           <h5 class="subtitulo">Formulario</h5>
           <div class="content-card">
-            <b-tabs content-class="mt-3" card>
+            <b-tabs content-class="mt-3" card v-model="tabIndex">
               <b-tab title="Usuario" active>
                 <b-alert show variant="info"
                   >Revisá los permisos del usuario en la solapa correspondiente
@@ -41,7 +41,14 @@
                   recomienda cambiarla luego de iniciar sesión.</b-alert
                 >
               </b-tab>
-              <b-tab title="Permisos">Permisos</b-tab>
+              <b-tab title="Permisos">
+                <b-table :items="permisos" small borderless>
+                  <template #cell(permiso)="row">
+                    <b-form-checkbox switch v-model="row.item.permiso">
+                    </b-form-checkbox>
+                  </template>
+                </b-table>
+              </b-tab>
             </b-tabs>
 
             <div class="botonera">
@@ -122,6 +129,8 @@ export default {
     return {
       endpoint: "usuario",
       usuarios: [],
+      permisos: [],
+
       fields: [
         {
           key: "id",
@@ -145,6 +154,7 @@ export default {
       formShow: true,
       showOverlay: false,
 
+      tabIndex: 0,
       selected: false,
 
       btnGuardarDes: false,
@@ -155,6 +165,8 @@ export default {
   },
   methods: {
     guardar() {
+      //console.log(JSON.stringify(this.permisos));
+      this.tabIndex = 0;
       this.$refs.form.requestSubmit();
     },
     nuevo() {
@@ -237,6 +249,25 @@ export default {
           this.showOverlay = false;
         });
     },
+    buscarPermisos() {
+      // this.getData("permisos", null).then((response) => {
+      //   this.permisos = response;
+      // });
+      this.permisos = [
+        {
+          id: 1,
+          padre: "Archivo",
+          hijo: "Choferes",
+          permiso: true,
+        },
+        {
+          id: 2,
+          padre: "Archivo",
+          hijo: "Vehículos",
+          permiso: false,
+        },
+      ];
+    },
     buscarRegistros() {
       this.showOverlay = true;
       this.getData(this.endpoint, null)
@@ -256,6 +287,7 @@ export default {
       }
     },
     limpiar() {
+      this.tabIndex = 0;
       this.form = {
         id: "",
         user: "",
@@ -270,6 +302,7 @@ export default {
   },
   created() {
     this.buscarRegistros();
+    this.buscarPermisos();
   },
   watch: {
     selected(valor) {
