@@ -21,6 +21,9 @@ Vue.use(VueAxios, axios);
 
 Vue.config.productionTip = false;
 
+import VueSession from "vue-session";
+Vue.use(VueSession);
+
 new Vue({
   router,
   render: (h) => h(App),

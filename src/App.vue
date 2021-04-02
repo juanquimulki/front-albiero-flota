@@ -1,13 +1,13 @@
 <template>
   <div>
     <b-navbar toggleable="lg" type="dark" variant="info" fixed="top">
-      <b-navbar-brand href="/">
+      <b-navbar-brand href="/dashboard">
         <span style="margin-left: 10px">Mantenimiento de Flota</span>
       </b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
-      <b-collapse id="nav-collapse" is-nav>
+      <b-collapse id="nav-collapse" is-nav v-if="$session.exists()">
         <b-navbar-nav class="ml-auto">
           <b-nav-item-dropdown
             class="mimenu"
@@ -63,7 +63,8 @@ export default {
   },
   methods: {
     cerrarSesion() {
-      alert("cerrar sesión");
+      this.$session.destroy();
+      this.$router.push("/");
     },
   },
 };

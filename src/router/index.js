@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
+import Login from "../views/Login";
 import Dashboard from "../views/Dashboard";
 import Choferes from "../views/archivos/Choferes";
 import Vehiculos from "../views/archivos/Vehiculos";
@@ -13,6 +14,11 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
+    name: "login",
+    component: Login,
+  },
+  {
+    path: "/dashboard",
     name: "dashboard",
     component: Dashboard,
   },
@@ -45,6 +51,12 @@ const routes = [
 
 const router = new VueRouter({
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.name !== "login" && !router.app.$session.exists())
+    next({ name: "login" });
+  else next();
 });
 
 export default router;
