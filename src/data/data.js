@@ -37,13 +37,13 @@ export default {
           })
           .catch((err) => {
             self.apiErrors(err.response.data);
-            reject();
+            reject(err.response.data.description);
           });
       });
     },
     patchData(endpoint, payload) {
       let self = this;
-      return new Promise(function (resolve) {
+      return new Promise(function (resolve, reject) {
         _axios
           .patch(endpoint, payload, {
             //headers: { Authorization: self.authorization },
@@ -53,6 +53,7 @@ export default {
           })
           .catch((err) => {
             self.apiErrors(err.response.data);
+            reject(err.response.data.description);
           });
       });
     },

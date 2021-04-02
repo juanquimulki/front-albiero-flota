@@ -32,7 +32,7 @@
 
                   <b-form-group
                     label="Nombre:"
-                    description="Nombre completo de la persona que ingresará al sistema"
+                    description="Nombre completo de la persona que ingresará al sistema."
                   >
                     <b-form-input
                       v-model="form.name"
@@ -50,9 +50,22 @@
             </b-tabs>
 
             <div class="botonera">
-              <b-button @click="guardar">Guardar</b-button>
-              <b-button variant="danger">Eliminar</b-button>
-              <b-button variant="outline-danger">Nuevo</b-button>
+              <b-button @click="guardar" :disabled="btnGuardarDes"
+                >Guardar</b-button
+              >
+              <b-button variant="danger" :disabled="btnEliminarDes"
+                >Eliminar</b-button
+              >
+              <b-button
+                variant="outline-danger"
+                :disabled="btnNuevoDes"
+                @click="limpiar"
+                >Nuevo</b-button
+              >
+              <b-button variant="danger" :disabled="btnClaveDes">
+                <b-icon icon="key" aria-hidden="true"></b-icon> Reestablecer
+                Clave
+              </b-button>
             </div>
           </div>
         </b-card>
@@ -81,6 +94,10 @@
                 :fields="fields"
                 outlined
                 small
+                selectable
+                select-mode="single"
+                ref="selectableTable"
+                @row-selected="onRowSelected"
               ></b-table>
             </div>
           </b-card>
@@ -104,8 +121,9 @@ export default {
       formShow: true,
       showOverlay: false,
       form: {
-        user: null,
-        name: null,
+        id: "",
+        user: "",
+        name: "",
       },
       fields: [
         {
@@ -121,17 +139,59 @@ export default {
           label: "Nombre",
         },
       ],
+
+      selected: false,
+      btnGuardarDes: false,
+      btnEliminarDes: true,
+      btnNuevoDes: false,
+      btnClaveDes: true,
     };
   },
   methods: {
+    nuevo() {
+      this.limpiar();
+    },
+    onRowSelected(item) {
+      if (item[0]) {
+        Object.assign(this.form, item[0]);
+        this.selected = true;
+      } else {
+        this.selected = false;
+      }
+    },
     onSubmit(evt) {
       evt.preventDefault();
 
       this.showOverlay = true;
+      if (this.form.id) {
+        this.update();
+      } else {
+        this.insert();
+      }
+    },
+    insert() {
       this.postData(this.endpoint, this.form)
         .then(() => {
           makeToast("¡Se ha guardado el registro!", "success");
           this.buscarRegistros();
+          this.limpiar();
+        })
+        .catch((e) => {
+          console.log(e);
+        })
+        .finally(() => {
+          this.showOverlay = false;
+        });
+    },
+    update() {
+      this.patchData(this.endpoint, this.form)
+        .then(() => {
+          makeToast("¡Se ha actualizado el registro!", "success");
+          this.buscarRegistros();
+          this.limpiar();
+        })
+        .catch((e) => {
+          console.log(e);
         })
         .finally(() => {
           this.showOverlay = false;
@@ -140,23 +200,23 @@ export default {
     guardar() {
       this.$refs.form.requestSubmit();
     },
-    onReset(evt) {
-      evt.preventDefault();
-      // Reset our form values
-      //this.limpiar();
-      // Trick to reset/clear native browser form validation state
+    limpiar() {
+      this.form = {
+        id: "",
+        user: "",
+        name: "",
+      };
       this.formShow = false;
       this.$nextTick(() => {
         this.formShow = true;
       });
+      this.$refs.selectableTable.clearSelected();
     },
     buscarRegistros() {
       this.showOverlay = true;
       this.getData(this.endpoint, null)
         .then((response) => {
           this.usuarios = response;
-          console.log(JSON.stringify(this.usuarios));
-          //this.menu = this.menu.filter((item) => item.options.length > 0);
         })
         .finally(() => {
           this.showOverlay = false;
@@ -165,6 +225,12 @@ export default {
   },
   created() {
     this.buscarRegistros();
+  },
+  watch: {
+    selected(valor) {
+      this.btnEliminarDes = !valor;
+      this.btnClaveDes = !valor;
+    },
   },
 };
 </script>
@@ -180,9 +246,6 @@ export default {
   margin-top: 0px;
   margin-bottom: 20px;
 }
-/* .subtitulo {
-  margin-bottom: 20px;
-} */
 .content-card {
   margin-left: 7px;
   margin-right: 7px;
@@ -197,5 +260,8 @@ export default {
   font-size: 10pt;
   padding: 10px;
   text-align: right;
+}
+.botonera button {
+  margin-bottom: 5px;
 }
 </style>
