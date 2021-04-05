@@ -16,6 +16,7 @@
             :text="item.label"
             right
           >
+            <b-dropdown-item disabled>{{ usuario }} </b-dropdown-item>
             <b-dropdown-item
               href="#"
               v-for="subitem in item.options"
@@ -53,13 +54,16 @@ export default {
     return {
       endpoint: "menu",
       menu: [],
+      usuario: "hola",
     };
   },
   created() {
-    this.getData(this.endpoint, null).then((response) => {
+    let user = this.$session.user;
+    this.getData(this.endpoint, { user }).then((response) => {
       this.menu = response;
-      //this.menu = this.menu.filter((item) => item.options.length > 0);
     });
+    this.usuario =
+      this.$session.get("name") + " (" + this.$session.get("user") + ")";
   },
   methods: {
     cerrarSesion() {
@@ -85,6 +89,9 @@ li.mimenu a {
 a.dropdown-item a.miopcion {
   color: black !important;
   text-decoration: none !important;
+}
+a.dropdown-item.disabled {
+  color: gray !important;
 }
 li.miopcion a {
   color: black !important;

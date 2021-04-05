@@ -211,7 +211,6 @@ export default {
           return x.id_hijo;
         });
       this.form.permisos = permisos;
-      console.log(JSON.stringify(this.form));
       this.postData(this.endpoint, this.form)
         .then(() => {
           makeToast("¡Se ha guardado el registro!", "success");
@@ -269,7 +268,6 @@ export default {
             permiso: x.permiso == 1 ? true : false,
           };
         });
-        console.log(JSON.stringify(this.permisos));
       });
     },
     buscarRegistros() {

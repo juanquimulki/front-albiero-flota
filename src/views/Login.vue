@@ -86,6 +86,7 @@ export default {
         .get("usuario/login/" + timeStamp, { params: this.form })
         .then((response) => {
           if (response.data.success) {
+            console.log(JSON.stringify(response.data));
             this.$session.start();
             this.$session.set("user", this.form.user);
             this.$session.set("name", response.data.name);
