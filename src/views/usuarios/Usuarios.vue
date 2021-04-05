@@ -165,7 +165,6 @@ export default {
   },
   methods: {
     guardar() {
-      //console.log(JSON.stringify(this.permisos));
       this.tabIndex = 0;
       this.$refs.form.requestSubmit();
     },
@@ -228,6 +227,12 @@ export default {
     },
     update() {
       this.showOverlay = true;
+      let permisos = this.permisos
+        .filter((item) => item.permiso == true)
+        .map((x) => {
+          return x.id_hijo;
+        });
+      this.form.permisos = permisos;
       this.patchData(this.endpoint, this.form)
         .then(() => {
           makeToast("¡Se ha actualizado el registro!", "success");
