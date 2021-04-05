@@ -249,24 +249,31 @@ export default {
           this.showOverlay = false;
         });
     },
-    buscarPermisos() {
-      // this.getData("permisos", null).then((response) => {
-      //   this.permisos = response;
-      // });
-      this.permisos = [
-        {
-          id: 1,
-          padre: "Archivo",
-          hijo: "Choferes",
-          permiso: true,
-        },
-        {
-          id: 2,
-          padre: "Archivo",
-          hijo: "Vehículos",
-          permiso: false,
-        },
-      ];
+    buscarPermisos(user) {
+      //let user = this.$session.get("user");
+      this.getData("permiso", { user }).then((response) => {
+        this.permisos = response.map((x) => {
+          return {
+            ...x,
+            permiso: x.permiso == 1 ? true : false,
+          };
+        });
+        console.log(JSON.stringify(this.permisos));
+      });
+      // this.permisos = [
+      //   {
+      //     id: 1,
+      //     padre: "Archivo",
+      //     hijo: "Choferes",
+      //     permiso: true,
+      //   },
+      //   {
+      //     id: 2,
+      //     padre: "Archivo",
+      //     hijo: "Vehículos",
+      //     permiso: false,
+      //   },
+      // ];
     },
     buscarRegistros() {
       this.showOverlay = true;
@@ -281,6 +288,7 @@ export default {
     onRowSelected(item) {
       if (item[0]) {
         Object.assign(this.form, item[0]);
+        this.permisos = this.buscarPermisos(this.form.user);
         this.selected = true;
       } else {
         this.selected = false;
@@ -293,6 +301,9 @@ export default {
         user: "",
         name: "",
       };
+      this.permisos = this.permisos.map((x) => {
+        return { ...x, permiso: false };
+      });
       this.formShow = false;
       this.$nextTick(() => {
         this.formShow = true;

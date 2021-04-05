@@ -22,7 +22,7 @@
           <b-col>
             <span class="descripcion">Ingreso al sistema...</span>
           </b-col>
-          <b-col style="text-align:right;">
+          <b-col style="text-align: right">
             <b-overlay
               :show="busy"
               rounded
