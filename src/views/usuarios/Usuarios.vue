@@ -208,7 +208,7 @@ export default {
       let permisos = this.permisos
         .filter((item) => item.permiso == true)
         .map((x) => {
-          return x.id_hijo;
+          return x.id_opcion;
         });
       this.form.permisos = permisos;
       this.postData(this.endpoint, this.form)
@@ -229,7 +229,7 @@ export default {
       let permisos = this.permisos
         .filter((item) => item.permiso == true)
         .map((x) => {
-          return x.id_hijo;
+          return x.id_opcion;
         });
       this.form.permisos = permisos;
       this.patchData(this.endpoint, this.form)
@@ -308,7 +308,7 @@ export default {
   },
   created() {
     this.buscarRegistros();
-    this.buscarPermisos();
+    this.buscarPermisos("");
   },
   watch: {
     selected(valor) {

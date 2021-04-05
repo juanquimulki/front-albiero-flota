@@ -86,11 +86,12 @@ export default {
         .get("usuario/login/" + timeStamp, { params: this.form })
         .then((response) => {
           if (response.data.success) {
-            console.log(JSON.stringify(response.data));
             this.$session.start();
             this.$session.set("user", this.form.user);
             this.$session.set("name", response.data.name);
             this.$session.set("token", response.data.token);
+            this.$session.set("menu", response.data.menu);
+            this.$emit("setMenu");
             this.$router.push("dashboard");
           } else {
             if (response.data.code == 1) {

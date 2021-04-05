@@ -16,7 +16,6 @@
             :text="item.label"
             right
           >
-            <b-dropdown-item disabled>{{ usuario }} </b-dropdown-item>
             <b-dropdown-item
               href="#"
               v-for="subitem in item.options"
@@ -25,11 +24,10 @@
                 subitem.label
               }}</router-link></b-dropdown-item
             >
-            <b-dropdown-item
-              href="#"
-              v-if="item.label == 'Usuarios'"
-              @click="cerrarSesion"
-              class="miopcion"
+          </b-nav-item-dropdown>
+          <b-nav-item-dropdown class="mimenu" text="Sesión" right>
+            <b-dropdown-item disabled>{{ usuario }} </b-dropdown-item>
+            <b-dropdown-item href="#" @click="cerrarSesion" class="miopcion"
               ><b-icon icon="door-closed"></b-icon>&nbsp;Cerrar
               Sesión</b-dropdown-item
             >
@@ -39,7 +37,7 @@
     </b-navbar>
 
     <div id="content">
-      <router-view></router-view>
+      <router-view @setMenu="handleSetMenu"></router-view>
     </div>
   </div>
 </template>
@@ -54,18 +52,18 @@ export default {
     return {
       endpoint: "menu",
       menu: [],
-      usuario: "hola",
+      usuario: "",
     };
   },
   created() {
-    let user = this.$session.user;
-    this.getData(this.endpoint, { user }).then((response) => {
-      this.menu = response;
-    });
-    this.usuario =
-      this.$session.get("name") + " (" + this.$session.get("user") + ")";
+    this.handleSetMenu();
   },
   methods: {
+    handleSetMenu() {
+      this.menu = this.$session.get("menu");
+      this.usuario =
+        this.$session.get("name") + " (" + this.$session.get("user") + ")";
+    },
     cerrarSesion() {
       this.$session.destroy();
       this.$router.push("/");
