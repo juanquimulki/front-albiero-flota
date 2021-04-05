@@ -206,6 +206,13 @@ export default {
     },
     insert() {
       this.showOverlay = true;
+      let permisos = this.permisos
+        .filter((item) => item.permiso == true)
+        .map((x) => {
+          return x.id_hijo;
+        });
+      this.form.permisos = permisos;
+      console.log(JSON.stringify(this.form));
       this.postData(this.endpoint, this.form)
         .then(() => {
           makeToast("¡Se ha guardado el registro!", "success");
@@ -250,7 +257,6 @@ export default {
         });
     },
     buscarPermisos(user) {
-      //let user = this.$session.get("user");
       this.getData("permiso", { user }).then((response) => {
         this.permisos = response.map((x) => {
           return {
@@ -260,20 +266,6 @@ export default {
         });
         console.log(JSON.stringify(this.permisos));
       });
-      // this.permisos = [
-      //   {
-      //     id: 1,
-      //     padre: "Archivo",
-      //     hijo: "Choferes",
-      //     permiso: true,
-      //   },
-      //   {
-      //     id: 2,
-      //     padre: "Archivo",
-      //     hijo: "Vehículos",
-      //     permiso: false,
-      //   },
-      // ];
     },
     buscarRegistros() {
       this.showOverlay = true;
