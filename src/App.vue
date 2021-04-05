@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-navbar toggleable="lg" type="dark" variant="info" fixed="top">
-      <b-navbar-brand href="/dashboard">
+      <b-navbar-brand href="/#/dashboard">
         <span style="margin-left: 10px">Mantenimiento de Flota</span>
       </b-navbar-brand>
 
@@ -27,6 +27,11 @@
           </b-nav-item-dropdown>
           <b-nav-item-dropdown class="mimenu" text="Sesión" right>
             <b-dropdown-item disabled>{{ usuario }} </b-dropdown-item>
+            <b-dropdown-item href="#" class="miopcion"
+              ><router-link to="/usuarios/clave" class="miopcion"
+                >Cambiar mi Clave</router-link
+              >
+            </b-dropdown-item>
             <b-dropdown-item href="#" @click="cerrarSesion" class="miopcion"
               ><b-icon icon="door-closed"></b-icon>&nbsp;Cerrar
               Sesión</b-dropdown-item

@@ -16,36 +16,43 @@ const routes = [
     path: "/",
     name: "login",
     component: Login,
+    meta: { opcion: 0 },
   },
   {
     path: "/dashboard",
     name: "dashboard",
     component: Dashboard,
+    meta: { opcion: 0 },
   },
   {
     path: "/archivos/choferes",
     name: "choferes",
     component: Choferes,
+    meta: { opcion: 4 },
   },
   {
     path: "/archivos/vehiculos",
     name: "vehiculos",
     component: Vehiculos,
+    meta: { opcion: 5 },
   },
   {
     path: "/reportes/garantiafecha",
     name: "garantiafecha",
     component: GarantiaFecha,
-  },
-  {
-    path: "/usuarios/clave",
-    name: "clave",
-    component: Clave,
+    meta: { opcion: 6 },
   },
   {
     path: "/usuarios/usuarios",
     name: "usuarios",
     component: Usuarios,
+    meta: { opcion: 7 },
+  },
+  {
+    path: "/usuarios/clave",
+    name: "clave",
+    component: Clave,
+    meta: { opcion: 0 },
   },
 ];
 
@@ -56,7 +63,16 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   if (to.name !== "login" && !router.app.$session.exists())
     next({ name: "login" });
-  else next();
+  else {
+    if (to.meta.opcion == 0) {
+      next();
+    } else {
+      let opciones = router.app.$session.get("opciones");
+      if (opciones.includes(to.meta.opcion)) {
+        next();
+      }
+    }
+  }
 });
 
 export default router;

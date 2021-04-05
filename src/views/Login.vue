@@ -91,6 +91,15 @@ export default {
             this.$session.set("name", response.data.name);
             this.$session.set("token", response.data.token);
             this.$session.set("menu", response.data.menu);
+
+            let opciones = [];
+            response.data.menu.forEach((element) => {
+              element.options.forEach((option) => {
+                opciones.push(parseInt(option.id));
+              });
+            });
+            this.$session.set("opciones", opciones);
+
             this.$emit("setMenu");
             this.$router.push("dashboard");
           } else {
