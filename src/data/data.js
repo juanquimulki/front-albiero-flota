@@ -5,7 +5,7 @@ export default {
   name: "Data",
   data() {
     return {
-      //authorization: this.$session.get("token"),
+      authorization: this.$session.get("token"),
     };
   },
   methods: {
@@ -15,7 +15,7 @@ export default {
         _axios
           .get(endpoint, {
             params: payload,
-            //headers: { Authorization: self.authorization },
+            headers: { Authorization: self.authorization },
           })
           .then((response) => {
             resolve(response.data.rows);
@@ -30,7 +30,7 @@ export default {
       return new Promise(function (resolve, reject) {
         _axios
           .post(endpoint, payload, {
-            //headers: { Authorization: self.authorization },
+            headers: { Authorization: self.authorization },
           })
           .then((response) => {
             resolve(response.data);
@@ -46,7 +46,7 @@ export default {
       return new Promise(function (resolve, reject) {
         _axios
           .patch(endpoint, payload, {
-            //headers: { Authorization: self.authorization },
+            headers: { Authorization: self.authorization },
           })
           .then((response) => {
             resolve(response.data);
@@ -63,7 +63,7 @@ export default {
         _axios
           .delete(endpoint, {
             data: payload,
-            //headers: { Authorization: self.authorization },
+            headers: { Authorization: self.authorization },
           })
           .then((response) => {
             resolve(response.data);
