@@ -211,18 +211,25 @@ export default {
           return x.id_opcion;
         });
       this.form.permisos = permisos;
-      this.postData(this.endpoint, this.form)
-        .then(() => {
-          makeToast("¡Se ha guardado el registro!", "success");
-          this.buscarRegistros();
-          this.limpiar();
-        })
-        .catch((e) => {
-          console.log(e);
-        })
-        .finally(() => {
+      if (this.form.permisos.length>0) {
+        this.postData(this.endpoint, this.form)
+          .then(() => {
+            makeToast("¡Se ha guardado el registro!", "success");
+            this.buscarRegistros();
+            this.limpiar();
+          })
+          .catch((e) => {
+            console.log(e);
+          })
+          .finally(() => {
+            this.showOverlay = false;
+          });
+      }
+      else {
+          makeToast("No has habilitado ningún permiso para el usuario.", "warning");
+          this.tabIndex = 1;
           this.showOverlay = false;
-        });
+      }
     },
     update() {
       this.showOverlay = true;
@@ -232,18 +239,25 @@ export default {
           return x.id_opcion;
         });
       this.form.permisos = permisos;
-      this.patchData(this.endpoint, this.form)
-        .then(() => {
-          makeToast("¡Se ha actualizado el registro!", "success");
-          this.buscarRegistros();
-          this.limpiar();
-        })
-        .catch((e) => {
-          console.log(e);
-        })
-        .finally(() => {
+      if (this.form.permisos.length>0) {
+        this.patchData(this.endpoint, this.form)
+          .then(() => {
+            makeToast("¡Se ha actualizado el registro!", "success");
+            this.buscarRegistros();
+            this.limpiar();
+          })
+          .catch((e) => {
+            console.log(e);
+          })
+          .finally(() => {
+            this.showOverlay = false;
+          });
+      }
+      else {
+          makeToast("No has habilitado ningún permiso para el usuario.", "warning");
+          this.tabIndex = 1;
           this.showOverlay = false;
-        });
+      }
     },
     delete() {
       this.showOverlay = true;
