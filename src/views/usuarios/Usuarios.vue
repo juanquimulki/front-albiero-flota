@@ -5,7 +5,7 @@
     <b-row>
       <b-col order-xl="1" order-lg="1" order-md="1" order-sm="2" order="2">
         <b-card>
-          <h5 class="subtitulo">Formulario</h5>
+          <h5>Formulario</h5>
           <div class="content-card">
             <b-tabs content-class="mt-3" card v-model="tabIndex">
               <b-tab title="Usuario" active>
@@ -42,7 +42,12 @@
                 >
               </b-tab>
               <b-tab title="Permisos">
-                <b-table :items="permisos" small borderless>
+                <b-table
+                  :items="permisos"
+                  :fields="fieldsPermisos"
+                  small
+                  borderless
+                >
                   <template #cell(permiso)="row">
                     <b-form-checkbox switch v-model="row.item.permiso">
                     </b-form-checkbox>
@@ -129,7 +134,6 @@ export default {
     return {
       endpoint: "usuario",
       usuarios: [],
-      permisos: [],
 
       fields: [
         {
@@ -161,6 +165,22 @@ export default {
       btnEliminarDes: true,
       btnNuevoDes: false,
       btnClaveDes: true,
+
+      permisos: [],
+      fieldsPermisos: [
+        {
+          key: "menu",
+          label: "Menú",
+        },
+        {
+          key: "opcion",
+          label: "Opción",
+        },
+        {
+          key: "permiso",
+          label: "Permiso",
+        },
+      ],
     };
   },
   methods: {
@@ -211,7 +231,7 @@ export default {
           return x.id_opcion;
         });
       this.form.permisos = permisos;
-      if (this.form.permisos.length>0) {
+      if (this.form.permisos.length > 0) {
         this.postData(this.endpoint, this.form)
           .then(() => {
             makeToast("¡Se ha guardado el registro!", "success");
@@ -224,11 +244,13 @@ export default {
           .finally(() => {
             this.showOverlay = false;
           });
-      }
-      else {
-          makeToast("No has habilitado ningún permiso para el usuario.", "warning");
-          this.tabIndex = 1;
-          this.showOverlay = false;
+      } else {
+        makeToast(
+          "No has habilitado ningún permiso para el usuario.",
+          "warning"
+        );
+        this.tabIndex = 1;
+        this.showOverlay = false;
       }
     },
     update() {
@@ -239,7 +261,7 @@ export default {
           return x.id_opcion;
         });
       this.form.permisos = permisos;
-      if (this.form.permisos.length>0) {
+      if (this.form.permisos.length > 0) {
         this.patchData(this.endpoint, this.form)
           .then(() => {
             makeToast("¡Se ha actualizado el registro!", "success");
@@ -252,11 +274,13 @@ export default {
           .finally(() => {
             this.showOverlay = false;
           });
-      }
-      else {
-          makeToast("No has habilitado ningún permiso para el usuario.", "warning");
-          this.tabIndex = 1;
-          this.showOverlay = false;
+      } else {
+        makeToast(
+          "No has habilitado ningún permiso para el usuario.",
+          "warning"
+        );
+        this.tabIndex = 1;
+        this.showOverlay = false;
       }
     },
     delete() {
