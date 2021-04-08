@@ -37,25 +37,12 @@
         </b-row>
       </b-form>
     </b-card>
-
-    <br />
-    <transition name="slide-fade">
-      <b-alert
-        :show="dismissCountDown"
-        dismissible
-        variant="danger"
-        @dismissed="dismissCountDown = 0"
-        @dismiss-count-down="countDownChanged"
-      >
-        <b>Error:</b>
-        {{ message }}
-      </b-alert>
-    </transition>
   </div>
 </template>
 
 <script>
 import _axios from "../common/apiClient";
+import makeToast from "../common/toast";
 
 export default {
   name: "Login",
@@ -104,11 +91,11 @@ export default {
             this.$router.push("dashboard");
           } else {
             if (response.data.code == 1) {
-              this.showAlert("El usuario no existe.");
+              makeToast("El usuario no existe.", "warning");
             } else if (response.data.code == 2) {
-              this.showAlert("La clave no es correcta.");
+              makeToast("La clave no es correcta.", "warning");
             } else if (response.data.code == 3) {
-              this.showAlert("La aplicación ha expirado.");
+              makeToast("La aplicación ha expirado.", "warning");
             }
           }
           this.busy = false;
@@ -117,10 +104,6 @@ export default {
 
     countDownChanged(dismissCountDown) {
       this.dismissCountDown = dismissCountDown;
-    },
-    showAlert(message) {
-      this.message = message;
-      this.dismissCountDown = this.dismissSecs;
     },
   },
 };
