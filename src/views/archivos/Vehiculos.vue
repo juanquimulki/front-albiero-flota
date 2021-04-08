@@ -1,39 +1,9 @@
 <template>
   <div>
     <h4>Vehículos</h4>
-    <div
-      class="chapa-vieja-auto"
-      v-bind:style="{ 'background-image': 'url(' + imagenChapaViejaAuto + ')' }"
-    >
-      LXG 764
-    </div>
     <br />
 
-    <div
-      class="chapa-nueva-auto"
-      v-bind:style="{ 'background-image': 'url(' + imagenChapaNuevaAuto + ')' }"
-    >
-      LX 764 GH
-    </div>
-    <br />
-
-    <div
-      class="chapa-vieja-moto"
-      v-bind:style="{ 'background-image': 'url(' + imagenChapaViejaMoto + ')' }"
-    >
-      012<br />ABC
-    </div>
-    <br />
-
-    <div
-      class="chapa-nueva-moto"
-      v-bind:style="{ 'background-image': 'url(' + imagenChapaNuevaMoto + ')' }"
-    >
-      A12<br />3BCD
-    </div>
-    <br />
-
-    <ChapaPatente :tipo="'auto'" :texto="'LXG764'" />
+    <ChapaPatente :tipo="'moto'" :texto="'LXG764'" />
   </div>
 </template>
 
@@ -44,68 +14,9 @@ export default {
   name: "Vehiculos",
   components: { ChapaPatente },
   data() {
-    return {
-      imagenChapaViejaAuto: require("../../assets/chapa_vieja_auto.jpg"),
-      imagenChapaNuevaAuto: require("../../assets/chapa_nueva_auto.jpg"),
-      imagenChapaViejaMoto: require("../../assets/chapa_vieja_moto.jpg"),
-      imagenChapaNuevaMoto: require("../../assets/chapa_nueva_moto.jpg"),
-    };
+    return {};
   },
 };
 </script>
 
-<style>
-.chapa-vieja-auto {
-  width: 200px;
-  height: 90px;
-  color: white;
-  font-weight: bold;
-  background-repeat: no-repeat;
-  background-size: contain;
-  text-align: center;
-  padding-top: 14px;
-  font-size: 32pt;
-  font-family: "Courier New", Courier, monospace;
-}
-
-.chapa-nueva-auto {
-  width: 200px;
-  /*height: 100px;*/
-  color: black;
-  font-weight: bold;
-  background-repeat: no-repeat;
-  background-size: contain;
-  text-align: center;
-  padding-top: 14px;
-  font-size: 26pt;
-  font-family: "Courier New", Courier, monospace;
-}
-
-.chapa-vieja-moto {
-  width: 150px;
-  height: 120px;
-  color: white;
-  font-weight: bold;
-  background-repeat: no-repeat;
-  background-size: contain;
-  text-align: center;
-  padding-top: 25px;
-  font-size: 32pt;
-  font-family: "Courier New", Courier, monospace;
-  line-height: 1;
-}
-
-.chapa-nueva-moto {
-  width: 145px;
-  height: 130px;
-  color: black;
-  font-weight: bold;
-  background-repeat: no-repeat;
-  background-size: contain;
-  text-align: center;
-  padding-top: 30px;
-  font-size: 32pt;
-  font-family: "Courier New", Courier, monospace;
-  line-height: 1;
-}
-</style>
+<style></style>

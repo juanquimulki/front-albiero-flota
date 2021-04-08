@@ -30,16 +30,34 @@ export default {
       case "auto":
         if (this.texto.length == 6) {
           this.clase = "chapa-vieja-auto";
+          this.imagen = this.imagenChapaViejaAuto;
+          this.matricula =
+            this.texto.substring(0, 3) + " " + this.texto.substring(3, 6);
         } else if (this.texto.length == 7) {
           this.clase = "chapa-nueva-auto";
+          this.imagen = this.imagenChapaNuevaAuto;
+          this.matricula =
+            this.texto.substring(0, 2) +
+            " " +
+            this.texto.substring(2, 5) +
+            " " +
+            this.texto.substring(5, 7);
         }
         break;
       case "moto":
+        if (this.texto.length == 6) {
+          this.clase = "chapa-vieja-moto";
+          this.imagen = this.imagenChapaViejaMoto;
+          this.matricula =
+            this.texto.substring(0, 3) + "\n" + this.texto.substring(3, 6);
+        } else if (this.texto.length == 7) {
+          this.clase = "chapa-nueva-moto";
+          this.imagen = this.imagenChapaNuevaMoto;
+          this.matricula =
+            this.texto.substring(0, 3) + "\n" + this.texto.substring(3, 7);
+        }
         break;
     }
-    this.clase = "chapa-vieja-auto";
-    this.imagen = this.imagenChapaViejaAuto;
-    this.matricula = "LXG 777";
   },
 };
 </script>
