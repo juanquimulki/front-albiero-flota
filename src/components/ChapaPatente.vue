@@ -1,55 +1,45 @@
 <template>
   <div>
-    <h4>Vehículos</h4>
     <div
-      class="chapa-vieja-auto"
-      v-bind:style="{ 'background-image': 'url(' + imagenChapaViejaAuto + ')' }"
+      :class="clase"
+      v-bind:style="{ 'background-image': 'url(' + imagen + ')' }"
     >
-      LXG 764
+      {{ matricula }}
     </div>
-    <br />
-
-    <div
-      class="chapa-nueva-auto"
-      v-bind:style="{ 'background-image': 'url(' + imagenChapaNuevaAuto + ')' }"
-    >
-      LX 764 GH
-    </div>
-    <br />
-
-    <div
-      class="chapa-vieja-moto"
-      v-bind:style="{ 'background-image': 'url(' + imagenChapaViejaMoto + ')' }"
-    >
-      012<br />ABC
-    </div>
-    <br />
-
-    <div
-      class="chapa-nueva-moto"
-      v-bind:style="{ 'background-image': 'url(' + imagenChapaNuevaMoto + ')' }"
-    >
-      A12<br />3BCD
-    </div>
-    <br />
-
-    <ChapaPatente :tipo="'auto'" :texto="'LXG764'" />
   </div>
 </template>
 
 <script>
-import ChapaPatente from "../../components/ChapaPatente";
-
 export default {
-  name: "Vehiculos",
-  components: { ChapaPatente },
+  name: "ChapaPatente",
+  props: ["tipo", "texto"],
   data() {
     return {
-      imagenChapaViejaAuto: require("../../assets/chapa_vieja_auto.jpg"),
-      imagenChapaNuevaAuto: require("../../assets/chapa_nueva_auto.jpg"),
-      imagenChapaViejaMoto: require("../../assets/chapa_vieja_moto.jpg"),
-      imagenChapaNuevaMoto: require("../../assets/chapa_nueva_moto.jpg"),
+      imagenChapaViejaAuto: require("../assets/chapa_vieja_auto.jpg"),
+      imagenChapaNuevaAuto: require("../assets/chapa_nueva_auto.jpg"),
+      imagenChapaViejaMoto: require("../assets/chapa_vieja_moto.jpg"),
+      imagenChapaNuevaMoto: require("../assets/chapa_nueva_moto.jpg"),
+
+      clase: "",
+      imagen: "",
+      matricula: "",
     };
+  },
+  created() {
+    switch (this.tipo) {
+      case "auto":
+        if (this.texto.length == 6) {
+          this.clase = "chapa-vieja-auto";
+        } else if (this.texto.length == 7) {
+          this.clase = "chapa-nueva-auto";
+        }
+        break;
+      case "moto":
+        break;
+    }
+    this.clase = "chapa-vieja-auto";
+    this.imagen = this.imagenChapaViejaAuto;
+    this.matricula = "LXG 777";
   },
 };
 </script>
