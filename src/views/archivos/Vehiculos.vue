@@ -9,7 +9,73 @@
           <br />
           <div class="content-card">
             <b-form @submit="onSubmit" v-if="formShow" ref="form">
+              <b-form-group label="Tipo:">
+                <b-form-select
+                  v-model="form.id_tipo"
+                  :options="vehiculos_tipos"
+                  required
+                ></b-form-select>
+              </b-form-group>
 
+              <b-form-group
+                label="Descripción:"
+                description="Marca y modelo detallados del vehículo."
+              >
+                <b-form-input
+                  v-model="form.descripcion"
+                  required
+                  maxlength="50"
+                ></b-form-input>
+              </b-form-group>
+
+              <b-form-group
+                label="Alias:"
+                description="Nombre informal identificatorio del vehículo. Ej.: Camioneta blanca de Juan."
+              >
+                <b-form-input
+                  v-model="form.alias"
+                  maxlength="30"
+                ></b-form-input>
+              </b-form-group>
+
+              <b-row>
+                <b-col>
+                  <b-form-group label="Chapa Patente:">
+                    <b-form-input
+                      v-model="chapaPatente"
+                      maxlength="7"
+                    ></b-form-input>
+                  </b-form-group>
+                </b-col>
+                <b-col> 
+                  <ChapaPatente tipo="auto" :texto="chapaPatenteWidget" />
+                </b-col>
+              </b-row>
+
+              <b-form-group
+                label="Modelo:"
+                description="Año de fabricación del vehículo."
+              >
+                <b-form-input
+                  v-model="form.anio"
+                  maxlength="4"
+                  type="number"
+                ></b-form-input>
+              </b-form-group>
+
+              <b-form-group label="Chofer Principal:">
+                <b-form-select
+                  v-model="form.id_chofer"
+                  :options="choferes"
+                ></b-form-select>
+              </b-form-group>
+
+              <b-form-group label="Vencimiento de Garantía:">
+                <b-form-input
+                  v-model="form.fecha_venc_gtia"
+                  type="date"
+                ></b-form-input>
+              </b-form-group>
             </b-form>
 
             <div class="botonera">
@@ -75,13 +141,41 @@ import Data from "../../data/data";
 import makeToast from "../../common/toast";
 import msgBoxConfirm from "../../common/confirm";
 
+import ChapaPatente from "../../components/ChapaPatente";
+
 export default {
   name: "Vehiculos",
+  components: { ChapaPatente },
   mixins: [Data],
   data() {
     return {
       endpoint: "vehiculo",
       registros: [],
+
+      vehiculos_tipos: [
+        {
+          value: "1",
+          text: "Moto",
+        },
+        {
+          value: "2",
+          text: "Auto",
+        },
+        {
+          value: "3",
+          text: "Camioneta",
+        },
+      ],
+      choferes: [
+        {
+          value: "1",
+          text: "Moto",
+        },
+        {
+          value: "2",
+          text: "Auto",
+        },
+      ],
 
       fields: [
         {
@@ -102,8 +196,7 @@ export default {
         },
       ],
 
-      form: {
-      },
+      form: {},
       formShow: true,
       showOverlay: false,
 
@@ -112,6 +205,9 @@ export default {
       btnGuardarDes: false,
       btnEliminarDes: true,
       btnNuevoDes: false,
+
+      chapaPatente: "",
+      chapaPatenteWidget: ""
     };
   },
   methods: {
@@ -203,8 +299,7 @@ export default {
       }
     },
     limpiar() {
-      this.form = {
-      };
+      this.form = {};
       this.formShow = false;
       this.$nextTick(() => {
         this.formShow = true;
@@ -219,6 +314,9 @@ export default {
     selected(valor) {
       this.btnEliminarDes = !valor;
     },
+    chapaPatente(valor) {
+      this.chapaPatenteWidget = valor;
+    }
   },
 };
 </script>
