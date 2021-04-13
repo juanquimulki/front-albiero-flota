@@ -6,16 +6,30 @@
     <b-row>
       <b-col>
         <Widget
+          :texto="'Vehículos'"
+          :numero="'0001'"
+          :icono="'person-square'"
+          :link="'archivos/vehiculos'"
+        />
+      </b-col>
+      <b-col>
+        <Widget
+          :texto="'Choferes'"
+          :numero="'0001'"
+          :icono="'person-square'"
+          :link="'archivos/choferes'"
+        />
+      </b-col>
+      <b-col> </b-col>
+      <b-col> </b-col>
+      <b-col>
+        <Widget
           :texto="'Usuarios'"
           :numero="'0001'"
           :icono="'person-square'"
           :link="'usuarios/usuarios'"
         />
       </b-col>
-      <b-col> </b-col>
-      <b-col> </b-col>
-      <b-col> </b-col>
-      <b-col> </b-col>
     </b-row>
   </div>
 </template>

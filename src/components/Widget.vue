@@ -28,6 +28,7 @@ export default {
 .card {
   border-radius: 10px;
   box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+  border-left: 4px solid red;
 }
 .card:hover {
   cursor: pointer;
