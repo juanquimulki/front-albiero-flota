@@ -4,7 +4,7 @@
     <br />
 
     <b-row>
-      <b-col>
+      <b-col cols="12" sm="12" md="6" lg="2" xl="2">
         <Widget
           :texto="'Vehículos'"
           :numero="'0001'"
@@ -12,7 +12,7 @@
           :link="'archivos/vehiculos'"
         />
       </b-col>
-      <b-col>
+      <b-col cols="12" sm="12" md="6" lg="2" xl="2">
         <Widget
           :texto="'Choferes'"
           :numero="'0001'"
@@ -20,9 +20,10 @@
           :link="'archivos/choferes'"
         />
       </b-col>
-      <b-col> </b-col>
-      <b-col> </b-col>
-      <b-col>
+      <b-col cols="12" sm="12" md="6" lg="2" xl="2"> </b-col>
+      <b-col cols="12" sm="12" md="6" lg="2" xl="2"> </b-col>
+      <b-col cols="12" sm="12" md="6" lg="2" xl="2"> </b-col>
+      <b-col cols="12" sm="12" md="6" lg="2" xl="2">
         <Widget
           :texto="'Usuarios'"
           :numero="'0001'"
@@ -43,4 +44,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.card {
+  margin-bottom: 15px;
+}
+</style>
