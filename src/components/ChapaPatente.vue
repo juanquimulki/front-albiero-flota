@@ -25,39 +25,49 @@ export default {
       matricula: "",
     };
   },
-  created() {
-    switch (this.tipo) {
-      case "auto":
-        if (this.texto.length == 6) {
-          this.clase = "chapa-vieja-auto";
-          this.imagen = this.imagenChapaViejaAuto;
-          this.matricula =
-            this.texto.substring(0, 3) + " " + this.texto.substring(3, 6);
-        } else if (this.texto.length == 7) {
-          this.clase = "chapa-nueva-auto";
-          this.imagen = this.imagenChapaNuevaAuto;
-          this.matricula =
-            this.texto.substring(0, 2) +
-            " " +
-            this.texto.substring(2, 5) +
-            " " +
-            this.texto.substring(5, 7);
-        }
-        break;
-      case "moto":
-        if (this.texto.length == 6) {
-          this.clase = "chapa-vieja-moto";
-          this.imagen = this.imagenChapaViejaMoto;
-          this.matricula =
-            this.texto.substring(0, 3) + "\n" + this.texto.substring(3, 6);
-        } else if (this.texto.length == 7) {
-          this.clase = "chapa-nueva-moto";
-          this.imagen = this.imagenChapaNuevaMoto;
-          this.matricula =
-            this.texto.substring(0, 3) + "\n" + this.texto.substring(3, 7);
-        }
-        break;
-    }
+  watch: {
+    texto(valor) {
+      switch (this.tipo) {
+        case "auto":
+          if (valor.length == 6) {
+            this.clase = "chapa-vieja-auto";
+            this.imagen = this.imagenChapaViejaAuto;
+            this.matricula =
+              valor.substring(0, 3) + " " + valor.substring(3, 6);
+          } else if (valor.length == 7) {
+            this.clase = "chapa-nueva-auto";
+            this.imagen = this.imagenChapaNuevaAuto;
+            this.matricula =
+              valor.substring(0, 2) +
+              " " +
+              valor.substring(2, 5) +
+              " " +
+              valor.substring(5, 7);
+          } else {
+            this.clase = "";
+            this.imagen = "";
+            this.matricula = "";
+          }
+          break;
+        case "moto":
+          if (valor.length == 6) {
+            this.clase = "chapa-vieja-moto";
+            this.imagen = this.imagenChapaViejaMoto;
+            this.matricula =
+              valor.substring(0, 3) + "\n" + valor.substring(3, 6);
+          } else if (valor.length == 7) {
+            this.clase = "chapa-nueva-moto";
+            this.imagen = this.imagenChapaNuevaMoto;
+            this.matricula =
+              valor.substring(0, 3) + "\n" + valor.substring(3, 7);
+          } else {
+            this.clase = "";
+            this.imagen = "";
+            this.matricula = "";
+          }
+          break;
+      }
+    },
   },
 };
 </script>
@@ -74,11 +84,13 @@ export default {
   padding-top: 14px;
   font-size: 32pt;
   font-family: "Courier New", Courier, monospace;
+  text-transform: uppercase;
 }
 
 .chapa-nueva-auto {
-  width: 200px;
-  /*height: 100px;*/
+  margin-top: 10px;
+  width: 210px;
+  height: 80px;
   color: black;
   font-weight: bold;
   background-repeat: no-repeat;
@@ -87,6 +99,7 @@ export default {
   padding-top: 14px;
   font-size: 26pt;
   font-family: "Courier New", Courier, monospace;
+  text-transform: uppercase;
 }
 
 .chapa-vieja-moto {
@@ -101,11 +114,12 @@ export default {
   font-size: 32pt;
   font-family: "Courier New", Courier, monospace;
   line-height: 1;
+  text-transform: uppercase;
 }
 
 .chapa-nueva-moto {
   width: 145px;
-  height: 130px;
+  height: 120px;
   color: black;
   font-weight: bold;
   background-repeat: no-repeat;
@@ -115,5 +129,6 @@ export default {
   font-size: 32pt;
   font-family: "Courier New", Courier, monospace;
   line-height: 1;
+  text-transform: uppercase;
 }
 </style>
