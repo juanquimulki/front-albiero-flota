@@ -167,30 +167,8 @@ export default {
       endpoint: "vehiculo",
       registros: [],
 
-      vehiculos_tipos: [
-        {
-          value: "1",
-          text: "Moto",
-        },
-        {
-          value: "2",
-          text: "Auto",
-        },
-        {
-          value: "3",
-          text: "Camioneta",
-        },
-      ],
-      choferes: [
-        {
-          value: "1",
-          text: "Moto",
-        },
-        {
-          value: "2",
-          text: "Auto",
-        },
-      ],
+      vehiculos_tipos: [],
+      choferes: [],
 
       fields: [
         {
@@ -321,6 +299,17 @@ export default {
   },
   created() {
     this.buscarRegistros();
+
+    this.getData("vehiculotipo", null).then((response) => {
+      this.vehiculos_tipos = response.map((x) => {
+        return { value: x.id, text: x.tipo };
+      });
+    });
+    this.getData("chofer", null).then((response) => {
+      this.choferes = response.map((x) => {
+        return { value: x.id, text: `(${x.abrev}) - ${x.apenom}` };
+      });
+    });
   },
   watch: {
     selected(valor) {
