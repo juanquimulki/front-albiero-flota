@@ -189,7 +189,16 @@ export default {
         },
       ],
 
-      form: { patente: "" },
+      form: {
+        id: "",
+        id_tipo: "",
+        descripcion: "",
+        alias: "",
+        patente: "",
+        anio: "",
+        fecha_venc_gtia: "",
+        id_chofer: "",
+      },
       formShow: true,
       showOverlay: false,
 
@@ -289,7 +298,16 @@ export default {
       }
     },
     limpiar() {
-      this.form = {};
+      this.form = {
+        id: "",
+        id_tipo: "",
+        descripcion: "",
+        alias: "",
+        patente: "",
+        anio: "",
+        fecha_venc_gtia: "",
+        id_chofer: "",
+      };
       this.formShow = false;
       this.$nextTick(() => {
         this.formShow = true;
