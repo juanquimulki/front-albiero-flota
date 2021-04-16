@@ -1,0 +1,21 @@
+.tituloReporte {
+    font-weight: bold;
+    font-family: arial;
+    border-bottom: 2px solid black;
+    margin-bottom: 15px;
+}
+
+.table {
+    width: 100%;
+    font-family: arial;
+    border: 1px solid black;
+}
+
+.table th {
+    border: 1px solid black;
+}
+
+.total {
+    font-family: arial;
+    float: right;
+}

@@ -17,7 +17,11 @@ Vue.use(BootstrapVue);
 // Optionally install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin);
 
-Vue.use(VueAxios, axios);
+const options = {
+  styles: ["./css/print.css"],
+};
+import VueHtmlToPaper from "vue-html-to-paper";
+Vue.use(VueHtmlToPaper, options);
 
 Vue.config.productionTip = false;
 

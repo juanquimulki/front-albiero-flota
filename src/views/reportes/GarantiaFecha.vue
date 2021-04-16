@@ -1,5 +1,5 @@
 <template>
-  <div><h4>Vencimientos de Garantía por Fecha</h4></div>
+  <div><h4>Reportes</h4></div>
 </template>
 
 <script>

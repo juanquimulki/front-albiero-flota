@@ -5,6 +5,7 @@ import Login from "../views/Login";
 import Dashboard from "../views/Dashboard";
 import Choferes from "../views/archivos/Choferes";
 import Vehiculos from "../views/archivos/Vehiculos";
+import Flota from "../views/reportes/Flota";
 import GarantiaFecha from "../views/reportes/GarantiaFecha";
 import Clave from "../views/usuarios/Clave";
 import Usuarios from "../views/usuarios/Usuarios";
@@ -35,6 +36,12 @@ const routes = [
     name: "vehiculos",
     component: Vehiculos,
     meta: { opcion: 5 },
+  },
+  {
+    path: "/reportes/flota",
+    name: "flota",
+    component: Flota,
+    meta: { opcion: 9 },
   },
   {
     path: "/reportes/garantiafecha",
