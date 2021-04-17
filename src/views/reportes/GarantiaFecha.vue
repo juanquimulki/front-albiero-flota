@@ -100,7 +100,7 @@ export default {
   },
   created() {
     this.fecha = moment().format("YYYY-MM-DD");
-    this.getData(this.endpoint, null).then((response) => {
+    this.getData("reporte/garantiafecha", null).then((response) => {
       this.items = response;
     });
   },
