@@ -18,7 +18,7 @@
         </b-col>
         <b-col cols="12" sm="12" md="6" lg="9" xl="9">
           <div class="botonera">
-            <b-button @click="print" variant="info"
+            <b-button @click="buscarRegistros" variant="info"
               ><b-icon icon="search"></b-icon>&nbsp;Consultar</b-button
             >&nbsp;
             <b-button @click="print" variant="success"
@@ -33,7 +33,7 @@
       <div id="printMe">
         <div class="tituloReporte">
           ALBIERO SISTEMAS - Mantenimiento de Flota
-          <br />Reporte :: Mi Flota
+          <br />Reporte :: Vencimientos de Garantía por Fecha
         </div>
         <b-table :items="items" :fields="fields" responsive> </b-table>
       </div>
@@ -59,7 +59,7 @@ export default {
           label: "#",
         },
         {
-          key: "tipo.tipo",
+          key: "tipo",
           label: "Tipo",
         },
         {
@@ -84,8 +84,12 @@ export default {
           formatter: "dateFormat",
         },
         {
-          key: "chofer.apenom",
+          key: "apenom",
           label: "Chofer",
+        },
+        {
+          key: "vencimiento",
+          label: "Días Venc.",
         },
       ],
     };
@@ -97,12 +101,16 @@ export default {
     print() {
       this.$htmlToPaper("printMe");
     },
+    buscarRegistros() {
+      let payload = { fecha: this.fecha };
+      this.getData("reporte/garantiafecha", payload).then((response) => {
+        this.items = response;
+      });
+    },
   },
   created() {
     this.fecha = moment().format("YYYY-MM-DD");
-    this.getData("reporte/garantiafecha", null).then((response) => {
-      this.items = response;
-    });
+    this.buscarRegistros();
   },
 };
 </script>
