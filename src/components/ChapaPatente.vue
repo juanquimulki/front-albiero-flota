@@ -23,26 +23,28 @@ export default {
       clase: "",
       imagen: "",
       matricula: "",
+
+      tipo_texto: "",
     };
   },
-  watch: {
-    texto(valor) {
-      switch (this.tipo) {
+  methods: {
+    actualizarImagen() {
+      switch (this.tipo_texto) {
         case "auto":
-          if (valor.length == 6) {
+          if (this.texto.length == 6) {
             this.clase = "chapa-vieja-auto";
             this.imagen = this.imagenChapaViejaAuto;
             this.matricula =
-              valor.substring(0, 3) + " " + valor.substring(3, 6);
-          } else if (valor.length == 7) {
+              this.texto.substring(0, 3) + " " + this.texto.substring(3, 6);
+          } else if (this.texto.length == 7) {
             this.clase = "chapa-nueva-auto";
             this.imagen = this.imagenChapaNuevaAuto;
             this.matricula =
-              valor.substring(0, 2) +
+              this.texto.substring(0, 2) +
               " " +
-              valor.substring(2, 5) +
+              this.texto.substring(2, 5) +
               " " +
-              valor.substring(5, 7);
+              this.texto.substring(5, 7);
           } else {
             this.clase = "";
             this.imagen = "";
@@ -50,16 +52,16 @@ export default {
           }
           break;
         case "moto":
-          if (valor.length == 6) {
+          if (this.texto.length == 6) {
             this.clase = "chapa-vieja-moto";
             this.imagen = this.imagenChapaViejaMoto;
             this.matricula =
-              valor.substring(0, 3) + "\n" + valor.substring(3, 6);
-          } else if (valor.length == 7) {
+              this.texto.substring(0, 3) + "\n" + this.texto.substring(3, 6);
+          } else if (this.texto.length == 7) {
             this.clase = "chapa-nueva-moto";
             this.imagen = this.imagenChapaNuevaMoto;
             this.matricula =
-              valor.substring(0, 3) + "\n" + valor.substring(3, 7);
+              this.texto.substring(0, 3) + "\n" + this.texto.substring(3, 7);
           } else {
             this.clase = "";
             this.imagen = "";
@@ -67,6 +69,20 @@ export default {
           }
           break;
       }
+    },
+  },
+  watch: {
+    tipo(valor) {
+      if (valor == 1) {
+        this.tipo_texto = "moto";
+      } else {
+        this.tipo_texto = "auto";
+      }
+
+      this.actualizarImagen();
+    },
+    texto() {
+      this.actualizarImagen();
     },
   },
 };

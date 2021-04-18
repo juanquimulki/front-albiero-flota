@@ -58,7 +58,7 @@
                   </b-form-group>
                 </b-col>
                 <b-col>
-                  <ChapaPatente tipo="auto" :texto="form.patente" />
+                  <ChapaPatente :tipo="form.id_tipo" :texto="form.patente" />
                 </b-col>
               </b-row>
 
