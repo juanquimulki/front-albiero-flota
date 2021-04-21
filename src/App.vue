@@ -70,7 +70,12 @@ export default {
         this.$session.get("name") + " (" + this.$session.get("user") + ")";
     },
     cerrarSesion() {
+      let user = this.$session.get("user");
       this.$session.destroy();
+
+      //bitácora
+      this.postData("log", { user: user, operation: "OUT" });
+
       this.$router.push("/");
     },
   },

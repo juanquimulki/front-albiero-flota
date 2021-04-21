@@ -87,6 +87,9 @@ export default {
             });
             this.$session.set("opciones", opciones);
 
+            //bitácora
+            _axios.post("log", { user: this.form.user, operation: "IN" });
+
             this.$emit("setMenu");
             this.$router.push("dashboard");
           } else {
