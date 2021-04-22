@@ -1,21 +1,23 @@
 <template>
-  <b-card @click="rutear()">
-    <b-row>
-      <b-col md="3" sm="3" cols="3" lg="4">
-        <b-icon :icon="icono"></b-icon>
-      </b-col>
-      <b-col md="9" sm="9" cols="9" lg="8">
-        <h5>{{ texto }}</h5>
-        <div class="numero">{{ numero }}</div>
-      </b-col>
-    </b-row>
-  </b-card>
+  <b-overlay :show="overlay" rounded="lg">
+    <b-card @click="rutear()">
+      <b-row>
+        <b-col md="3" sm="3" cols="3" lg="4">
+          <b-icon :icon="icono"></b-icon>
+        </b-col>
+        <b-col md="9" sm="9" cols="9" lg="8">
+          <h5>{{ texto }}</h5>
+          <div class="numero">{{ numero }}</div>
+        </b-col>
+      </b-row>
+    </b-card>
+  </b-overlay>
 </template>
 
 <script>
 export default {
   name: "Widget",
-  props: ["texto", "numero", "icono", "link"],
+  props: ["texto", "numero", "icono", "link", "overlay"],
   methods: {
     rutear() {
       this.$router.push(this.link);
