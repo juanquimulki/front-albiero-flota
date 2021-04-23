@@ -85,12 +85,27 @@
                 </b-col>
               </b-row>
 
-              <b-form-group label="Chofer Principal:">
-                <b-form-select
-                  v-model="form.id_chofer"
-                  :options="choferes"
-                ></b-form-select>
-              </b-form-group>
+              <b-row>
+                <b-col cols="12" sm="12" md="12" lg="6" xl="6">
+                  <b-form-group label="Chofer Principal:">
+                    <b-form-select
+                      v-model="form.id_chofer"
+                      :options="choferes"
+                    ></b-form-select>
+                  </b-form-group>
+                </b-col>
+                <b-col cols="12" sm="12" md="12" lg="6" xl="6">
+                  <b-form-group
+                    label="Combustible:"
+                    description="Tipo de combustible que utiliza el vehículo."
+                  >
+                    <b-form-select
+                      v-model="form.id_tipo_comb"
+                      :options="combustible_tipos"
+                    ></b-form-select>
+                  </b-form-group>
+                </b-col>
+              </b-row>
             </b-form>
 
             <div class="botonera">
@@ -169,6 +184,7 @@ export default {
 
       vehiculos_tipos: [],
       choferes: [],
+      combustible_tipos: [],
 
       fields: [
         {
@@ -195,6 +211,7 @@ export default {
         descripcion: "",
         alias: "",
         patente: "",
+        id_tipo_comb: "",
         anio: "",
         fecha_venc_gtia: "",
         id_chofer: "",
@@ -304,6 +321,7 @@ export default {
         descripcion: "",
         alias: "",
         patente: "",
+        id_tipo_comb: "",
         anio: "",
         fecha_venc_gtia: "",
         id_chofer: "",
@@ -326,6 +344,11 @@ export default {
     this.getData("chofer", null).then((response) => {
       this.choferes = response.map((x) => {
         return { value: x.id, text: `(${x.abrev}) - ${x.apenom}` };
+      });
+    });
+    this.getData("combustibletipo", null).then((response) => {
+      this.combustible_tipos = response.map((x) => {
+        return { value: x.id, text: x.tipo };
       });
     });
   },
