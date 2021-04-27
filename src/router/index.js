@@ -7,6 +7,7 @@ import Choferes from "../views/archivos/Choferes";
 import Vehiculos from "../views/archivos/Vehiculos";
 import Kilometraje from "../views/vehiculos/Kilometraje";
 import Partes from "../views/vehiculos/Partes";
+import Tareas from "../views/vehiculos/Tareas";
 import Flota from "../views/reportes/Flota";
 import GarantiaFecha from "../views/reportes/GarantiaFecha";
 import Clave from "../views/usuarios/Clave";
@@ -50,6 +51,12 @@ const routes = [
     name: "partes",
     component: Partes,
     meta: { opcion: 11 },
+  },
+  {
+    path: "/vehiculos/tareas",
+    name: "tareas",
+    component: Tareas,
+    meta: { opcion: 12 },
   },
   {
     path: "/reportes/flota",
