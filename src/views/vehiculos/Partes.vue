@@ -12,7 +12,7 @@
               <b-row>
                 <b-col cols="12" sm="12" md="12" lg="6" xl="6">
                   <b-form-group
-                    label="Parte / Pieza"
+                    label="Parte / Pieza:"
                     description="Parte o pieza de algún vehículo."
                   >
                     <b-form-input

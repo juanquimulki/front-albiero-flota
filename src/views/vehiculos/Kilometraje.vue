@@ -22,7 +22,7 @@
 
               <b-row>
                 <b-col cols="12" sm="12" md="12" lg="6" xl="6">
-                  <b-form-group label="Fecha">
+                  <b-form-group label="Fecha:">
                     <b-form-input
                       type="date"
                       v-model="form.fecha"
@@ -32,7 +32,7 @@
                   </b-form-group>
                 </b-col>
                 <b-col cols="12" sm="12" md="12" lg="6" xl="6">
-                  <b-form-group label="Hora">
+                  <b-form-group label="Hora:">
                     <b-form-input
                       type="time"
                       v-model="form.hora"
@@ -46,8 +46,8 @@
               <b-row>
                 <b-col cols="12" sm="12" md="12" lg="6" xl="6">
                   <b-form-group
-                    label="Kilómetros"
-                    description="Ingresá aquí un número entero, y no las fracciones de kilómetro."
+                    label="Kilómetros:"
+                    description="Un número entero, y no las fracciones de kilómetro."
                   >
                     <b-form-input
                       type="number"
