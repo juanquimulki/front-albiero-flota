@@ -45,7 +45,7 @@
 
               <b-row>
                 <b-col cols="12" sm="12" md="12" lg="6" xl="6">
-                  <b-form-group label="Kilómetros">
+                  <b-form-group label="Kilómetros" description="Ingresá aquí un número entero, y no las fracciones de kilómetro.">
                     <b-form-input
                       type="number"
                       v-model="form.kilometros"
@@ -154,6 +154,8 @@ export default {
         id: "",
         id_vehiculo: "",
         fecha_hora: "",
+        fecha: "",
+        hora: "",
         kilometros: "",
       },
       formShow: true,
@@ -185,6 +187,7 @@ export default {
     },
     onSubmit(evt) {
       evt.preventDefault();
+      this.form.fecha_hora = this.form.fecha + " " + this.form.hora;
 
       if (this.form.id) {
         this.update();
@@ -251,6 +254,9 @@ export default {
     onRowSelected(item) {
       if (item[0]) {
         Object.assign(this.form, item[0]);
+        let fecha_hora = this.form.fecha_hora.split(" ");
+        this.form.fecha = fecha_hora[0];
+        this.form.hora = fecha_hora[1];
         this.selected = true;
       } else {
         this.selected = false;
@@ -259,14 +265,11 @@ export default {
     limpiar() {
       this.form = {
         id: "",
-        id_tipo: "",
-        descripcion: "",
-        alias: "",
-        patente: "",
-        id_tipo_comb: "",
-        anio: "",
-        fecha_venc_gtia: "",
-        id_chofer: "",
+        id_vehiculo: "",
+        fecha_hora: "",
+        fecha: "",
+        hora: "",
+        kilometros: "",
       };
       this.formShow = false;
       this.$nextTick(() => {
@@ -283,6 +286,11 @@ export default {
         return { value: x.id, text: `${x.descripcion} (${x.alias})` };
       });
     });
+  },
+  watch: {
+    selected(valor) {
+      this.btnEliminarDes = !valor;
+    },
   },
 };
 </script>
