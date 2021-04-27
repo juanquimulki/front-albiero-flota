@@ -6,6 +6,7 @@ import Dashboard from "../views/Dashboard";
 import Choferes from "../views/archivos/Choferes";
 import Vehiculos from "../views/archivos/Vehiculos";
 import Kilometraje from "../views/vehiculos/Kilometraje";
+import Partes from "../views/vehiculos/Partes";
 import Flota from "../views/reportes/Flota";
 import GarantiaFecha from "../views/reportes/GarantiaFecha";
 import Clave from "../views/usuarios/Clave";
@@ -43,6 +44,12 @@ const routes = [
     name: "kilometraje",
     component: Kilometraje,
     meta: { opcion: 10 },
+  },
+  {
+    path: "/vehiculos/partes",
+    name: "partes",
+    component: Partes,
+    meta: { opcion: 11 },
   },
   {
     path: "/reportes/flota",

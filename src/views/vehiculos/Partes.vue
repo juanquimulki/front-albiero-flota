@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h4>Kilometraje</h4>
+    <h4>Partes</h4>
     <br />
     <b-row>
       <b-col order-xl="1" order-lg="1" order-md="1" order-sm="2" order="2">
@@ -11,49 +11,14 @@
             <b-form @submit="onSubmit" v-if="formShow" ref="form">
               <b-row>
                 <b-col cols="12" sm="12" md="12" lg="6" xl="6">
-                  <b-form-group label="Vehículo">
-                    <b-form-select
-                      v-model="form.id_vehiculo"
-                      :options="vehiculos"
-                    ></b-form-select>
-                  </b-form-group>
-                </b-col>
-              </b-row>
-
-              <b-row>
-                <b-col cols="12" sm="12" md="12" lg="6" xl="6">
-                  <b-form-group label="Fecha">
-                    <b-form-input
-                      type="date"
-                      v-model="form.fecha"
-                      required
-                      maxlength="50"
-                    ></b-form-input>
-                  </b-form-group>
-                </b-col>
-                <b-col cols="12" sm="12" md="12" lg="6" xl="6">
-                  <b-form-group label="Hora">
-                    <b-form-input
-                      type="time"
-                      v-model="form.hora"
-                      required
-                      maxlength="50"
-                    ></b-form-input>
-                  </b-form-group>
-                </b-col>
-              </b-row>
-
-              <b-row>
-                <b-col cols="12" sm="12" md="12" lg="6" xl="6">
                   <b-form-group
-                    label="Kilómetros"
-                    description="Ingresá aquí un número entero, y no las fracciones de kilómetro."
+                    label="Parte / Pieza"
+                    description="Parte o pieza de algún vehículo."
                   >
                     <b-form-input
-                      type="number"
-                      v-model="form.kilometros"
+                      v-model="form.parte"
                       required
-                      maxlength="50"
+                      maxlength="40"
                     ></b-form-input>
                   </b-form-group>
                 </b-col>
@@ -119,19 +84,17 @@
 
 <script>
 import Data from "../../data/data";
-import moment from "moment";
 
 import makeToast from "../../common/toast";
 import msgBoxConfirm from "../../common/confirm";
 
 export default {
-  name: "Kilometraje",
+  name: "Partes",
   mixins: [Data],
   data() {
     return {
-      endpoint: "kilometraje",
+      endpoint: "parte",
       registros: [],
-      vehiculos: [],
 
       fields: [
         {
@@ -139,27 +102,14 @@ export default {
           label: "#",
         },
         {
-          key: "vehiculo.descripcion_alias",
-          label: "Vehículo",
-        },
-        {
-          key: "kilometros",
-          label: "Kilómetros",
-        },
-        {
-          key: "fecha_hora",
-          label: "Fecha / Hora",
-          formatter: this.dateFormat,
+          key: "parte",
+          label: "Parte / Pieza",
         },
       ],
 
       form: {
         id: "",
-        id_vehiculo: "",
-        fecha_hora: "",
-        fecha: "",
-        hora: "",
-        kilometros: "",
+        parte: "",
       },
       formShow: true,
       showOverlay: false,
@@ -172,9 +122,6 @@ export default {
     };
   },
   methods: {
-    dateFormat(value) {
-      return moment(value).format("DD/MM/YYYY HH:mm");
-    },
     guardar() {
       this.$refs.form.requestSubmit();
     },
@@ -190,7 +137,6 @@ export default {
     },
     onSubmit(evt) {
       evt.preventDefault();
-      this.form.fecha_hora = this.form.fecha + " " + this.form.hora;
 
       if (this.form.id) {
         this.update();
@@ -257,9 +203,6 @@ export default {
     onRowSelected(item) {
       if (item[0]) {
         Object.assign(this.form, item[0]);
-        let fecha_hora = this.form.fecha_hora.split(" ");
-        this.form.fecha = fecha_hora[0];
-        this.form.hora = fecha_hora[1];
         this.selected = true;
       } else {
         this.selected = false;
@@ -268,11 +211,7 @@ export default {
     limpiar() {
       this.form = {
         id: "",
-        id_vehiculo: "",
-        fecha_hora: "",
-        fecha: "",
-        hora: "",
-        kilometros: "",
+        parte: "",
       };
       this.formShow = false;
       this.$nextTick(() => {
@@ -283,12 +222,6 @@ export default {
   },
   created() {
     this.buscarRegistros();
-
-    this.getData("vehiculo", null).then((response) => {
-      this.vehiculos = response.map((x) => {
-        return { value: x.id, text: `${x.descripcion} (${x.alias})` };
-      });
-    });
   },
   watch: {
     selected(valor) {
