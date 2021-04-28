@@ -63,6 +63,7 @@
 
             <div class="content-card">
               <b-table
+                id="my-table"
                 striped
                 hover
                 :items="registros"
@@ -73,7 +74,15 @@
                 select-mode="single"
                 ref="selectableTable"
                 @row-selected="onRowSelected"
+                :per-page="perPage"
+                :current-page="currentPage"
               ></b-table>
+              <b-pagination
+                v-model="currentPage"
+                :total-rows="rows"
+                :per-page="perPage"
+                aria-controls="my-table"
+              ></b-pagination>
             </div>
           </b-card>
         </b-overlay>
@@ -95,6 +104,9 @@ export default {
     return {
       endpoint: "parte",
       registros: [],
+
+      currentPage: 1,
+      perPage: 10,
 
       fields: [
         {
@@ -226,6 +238,11 @@ export default {
   watch: {
     selected(valor) {
       this.btnEliminarDes = !valor;
+    },
+  },
+  computed: {
+    rows() {
+      return this.registros.length;
     },
   },
 };
