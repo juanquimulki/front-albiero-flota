@@ -21,7 +21,7 @@
               </b-row>
 
               <b-row>
-                <b-col cols="12" sm="12" md="12" lg="6" xl="6">
+                <b-col cols="12" sm="12" md="12" lg="4" xl="4">
                   <b-form-group label="Fecha:">
                     <b-form-input
                       type="date"
@@ -31,7 +31,7 @@
                     ></b-form-input>
                   </b-form-group>
                 </b-col>
-                <b-col cols="12" sm="12" md="12" lg="6" xl="6">
+                <b-col cols="6" sm="6" md="6" lg="4" xl="4">
                   <b-form-group label="Hora:">
                     <b-form-input
                       type="time"
@@ -40,6 +40,14 @@
                       maxlength="50"
                     ></b-form-input>
                   </b-form-group>
+                </b-col>
+                <b-col cols="6" sm="6" md="6" lg="4" xl="4">
+                  <b-button
+                    variant="primary"
+                    style="margin-top: 30px"
+                    @click="ahora"
+                    ><b-icon icon="alarm"></b-icon> Ahora</b-button
+                  >
                 </b-col>
               </b-row>
 
@@ -98,6 +106,7 @@
 
             <div class="content-card">
               <b-table
+                id="my-table"
                 striped
                 hover
                 :items="registros"
@@ -108,7 +117,15 @@
                 select-mode="single"
                 ref="selectableTable"
                 @row-selected="onRowSelected"
+                :per-page="perPage"
+                :current-page="currentPage"
               ></b-table>
+              <b-pagination
+                v-model="currentPage"
+                :total-rows="rows"
+                :per-page="perPage"
+                aria-controls="my-table"
+              ></b-pagination>
             </div>
           </b-card>
         </b-overlay>
@@ -132,6 +149,9 @@ export default {
       endpoint: "kilometraje",
       registros: [],
       vehiculos: [],
+
+      currentPage: 1,
+      perPage: 10,
 
       fields: [
         {
@@ -172,6 +192,10 @@ export default {
     };
   },
   methods: {
+    ahora() {
+      this.form.fecha = moment().format("YYYY-MM-DD");
+      this.form.hora = moment().format("HH:mm");
+    },
     dateFormat(value) {
       return moment(value).format("DD/MM/YYYY HH:mm");
     },
@@ -293,6 +317,11 @@ export default {
   watch: {
     selected(valor) {
       this.btnEliminarDes = !valor;
+    },
+  },
+  computed: {
+    rows() {
+      return this.registros.length;
     },
   },
 };
