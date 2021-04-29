@@ -108,6 +108,17 @@
                   </b-form-group>
                 </b-col>
               </b-row>
+
+              <b-row>
+                <b-col cols="12" sm="12" md="12" lg="6" xl="6">
+                  <b-form-group
+                    label="Kilometraje:"
+                    description="Capturado de la última actulización de Kilometraje."
+                  >
+                    <b-form-input v-model="kilometraje" disabled></b-form-input>
+                  </b-form-group>
+                </b-col>
+              </b-row>
             </b-form>
 
             <div class="botonera">
@@ -169,6 +180,7 @@
 
 <script>
 import Data from "../../data/data";
+import moment from "moment";
 
 import makeToast from "../../common/toast";
 import msgBoxConfirm from "../../common/confirm";
@@ -220,6 +232,7 @@ export default {
       },
       formShow: true,
       showOverlay: false,
+      kilometraje: "",
 
       selected: false,
 
@@ -312,6 +325,8 @@ export default {
       if (item[0]) {
         Object.assign(this.form, item[0]);
         this.selected = true;
+
+        this.buscarKilometraje(this.form.id);
       } else {
         this.selected = false;
       }
@@ -328,11 +343,25 @@ export default {
         fecha_venc_gtia: "",
         id_chofer: "",
       };
+      this.kilometraje = "";
       this.formShow = false;
       this.$nextTick(() => {
         this.formShow = true;
       });
       this.$refs.selectableTable.clearSelected();
+    },
+    buscarKilometraje(id_vehiculo) {
+      this.getData("kilometraje/vehiculo", { id_vehiculo }).then((response) => {
+        if (response.length > 0) {
+          this.kilometraje =
+            response[0].kilometros +
+            " kms (desde el " +
+            moment(response[0].fecha_hora).format("DD/MM/YYYY") +
+            ")";
+        } else {
+          this.kilometraje = "(sin datos...)";
+        }
+      });
     },
   },
   created() {
