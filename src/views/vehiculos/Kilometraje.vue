@@ -62,6 +62,8 @@
                       v-model="form.kilometros"
                       required
                       maxlength="50"
+                      min="1"
+                      max="1000000"
                     ></b-form-input>
                   </b-form-group>
                 </b-col>

@@ -72,6 +72,8 @@
                       v-model="form.anio"
                       maxlength="4"
                       type="number"
+                      min="1900"
+                      max="2100"
                     ></b-form-input>
                   </b-form-group>
                 </b-col>
