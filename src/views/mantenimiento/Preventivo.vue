@@ -11,15 +11,44 @@
             <b-form @submit="onSubmit" v-if="formShow" ref="form">
               <b-row>
                 <b-col cols="12" sm="12" md="12" lg="6" xl="6">
-                  <b-form-group
-                    label="Tarea:"
-                    description="Tarea general sobre alguna parte o pieza de vehículo."
-                  >
-                    <b-form-input
-                      v-model="form.tarea"
+                  <b-form-group label="Vehículo:">
+                    <b-form-select
+                      v-model="form.id_vehiculo"
+                      :options="vehiculos"
                       required
-                      maxlength="30"
-                    ></b-form-input>
+                    ></b-form-select>
+                  </b-form-group>
+                </b-col>
+              </b-row>
+
+              <b-row>
+                <b-col cols="12" sm="12" md="6" lg="6" xl="6">
+                  <b-form-group label="Parte / Pieza:">
+                    <b-form-select
+                      v-model="form.id_parte"
+                      :options="partes"
+                      required
+                    ></b-form-select>
+                  </b-form-group>
+                </b-col>
+                <b-col cols="12" sm="12" md="6" lg="6" xl="6">
+                  <b-form-group label="Tarea:">
+                    <b-form-select
+                      v-model="form.id_tarea"
+                      :options="tareas"
+                      required
+                    ></b-form-select>
+                  </b-form-group>
+                </b-col>
+              </b-row>
+
+              <b-row>
+                <b-col cols="12" sm="12" md="12" lg="12" xl="12">
+                  <b-form-group label="Detalles:">
+                    <b-form-textarea
+                      v-model="form.detalles"
+                      rows="3"
+                    ></b-form-textarea>
                   </b-form-group>
                 </b-col>
               </b-row>
@@ -102,7 +131,7 @@ export default {
   mixins: [Data],
   data() {
     return {
-      endpoint: "tarea",
+      endpoint: "preventivo",
       registros: [],
 
       currentPage: 1,
@@ -114,14 +143,25 @@ export default {
           label: "#",
         },
         {
-          key: "tarea",
+          key: "vehiculo.descripcion_alias",
+          label: "Vehículo",
+        },
+        {
+          key: "parte.parte",
+          label: "Parte / Pieza",
+        },
+        {
+          key: "tarea.tarea",
           label: "Tarea",
         },
       ],
 
       form: {
-        id: "",
-        tarea: "",
+        id: null,
+        id_vehiculo: null,
+        id_parte: null,
+        id_tarea: null,
+        detalles: null,
       },
       formShow: true,
       showOverlay: false,
@@ -131,6 +171,10 @@ export default {
       btnGuardarDes: false,
       btnEliminarDes: true,
       btnNuevoDes: false,
+
+      vehiculos: [],
+      partes: [],
+      tareas: [],
     };
   },
   methods: {
@@ -222,8 +266,11 @@ export default {
     },
     limpiar() {
       this.form = {
-        id: "",
-        tarea: "",
+        id: null,
+        id_vehiculo: null,
+        id_parte: null,
+        id_tarea: null,
+        detalles: null,
       };
       this.formShow = false;
       this.$nextTick(() => {
@@ -234,6 +281,22 @@ export default {
   },
   created() {
     this.buscarRegistros();
+
+    this.getData("vehiculo", null).then((response) => {
+      this.vehiculos = response.map((x) => {
+        return { value: x.id, text: `${x.descripcion} (${x.alias})` };
+      });
+    });
+    this.getData("tarea", null).then((response) => {
+      this.tareas = response.map((x) => {
+        return { value: x.id, text: x.tarea };
+      });
+    });
+    this.getData("parte", null).then((response) => {
+      this.partes = response.map((x) => {
+        return { value: x.id, text: x.parte };
+      });
+    });
   },
   watch: {
     selected(valor) {

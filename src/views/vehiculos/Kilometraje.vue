@@ -11,7 +11,7 @@
             <b-form @submit="onSubmit" v-if="formShow" ref="form">
               <b-row>
                 <b-col cols="12" sm="12" md="12" lg="6" xl="6">
-                  <b-form-group label="Vehículo">
+                  <b-form-group label="Vehículo:">
                     <b-form-select
                       v-model="form.id_vehiculo"
                       :options="vehiculos"
