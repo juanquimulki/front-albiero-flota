@@ -155,6 +155,23 @@
             </div>
 
             <div class="content-card">
+              <b-row>
+                <b-col cols="12" sm="12" md="6" lg="6" xl="6"> </b-col>
+                <b-col cols="12" sm="12" md="6" lg="6" xl="6">
+                  <b-input-group size="sm" style="margin-bottom: 5px">
+                    <b-input-group-prepend is-text>
+                      <b-icon icon="search"></b-icon>
+                    </b-input-group-prepend>
+                    <b-form-input
+                      v-model="filter"
+                      type="search"
+                      id="filterInput"
+                      placeholder="Escribí para buscar por vehículo..."
+                    ></b-form-input>
+                  </b-input-group>
+                </b-col>
+              </b-row>
+
               <b-table
                 id="my-table"
                 striped
@@ -169,6 +186,8 @@
                 @row-selected="onRowSelected"
                 :per-page="perPage"
                 :current-page="currentPage"
+                :filter="filter"
+                :filterOn="filterOn"
               ></b-table>
               <b-pagination
                 v-model="currentPage"
@@ -219,6 +238,9 @@ export default {
           label: "Tarea",
         },
       ],
+
+      filter: "",
+      filterOn: ["vehiculo.descripcion_alias"],
 
       form: {
         id: null,
