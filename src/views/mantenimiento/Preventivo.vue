@@ -52,6 +52,70 @@
                   </b-form-group>
                 </b-col>
               </b-row>
+
+              <b-form-group label="Programa:" v-slot="{ ariaDescribedby }">
+                <b-form-radio
+                  v-model="form.recurrente"
+                  :aria-describedby="ariaDescribedby"
+                  name="some-radios"
+                  value="0"
+                  >Evento único</b-form-radio
+                >
+                <b-form-radio
+                  v-model="form.recurrente"
+                  :aria-describedby="ariaDescribedby"
+                  name="some-radios"
+                  value="1"
+                  >Evento recurrente</b-form-radio
+                >
+              </b-form-group>
+
+              <div v-if="formRecurrente">
+                <b-row>
+                  <b-col cols="12" sm="12" md="6" lg="6" xl="6">
+                    <b-form-group label="Cada ... días:">
+                      <b-form-input
+                        v-model="form.frecuenciaDias"
+                        type="number"
+                      ></b-form-input>
+                    </b-form-group>
+                  </b-col>
+                  <b-col cols="12" sm="12" md="6" lg="6" xl="6">
+                    <b-form-group
+                      label="Cada ... kilómetros:"
+                      description="Un número entero, y no las fracciones de kilómetro."
+                    >
+                      <b-form-input
+                        v-model="form.frecuenciaKms"
+                        type="number"
+                      ></b-form-input>
+                    </b-form-group>
+                  </b-col>
+                </b-row>
+              </div>
+              <div v-else>
+                <b-row>
+                  <b-col cols="12" sm="12" md="6" lg="6" xl="6">
+                    <b-form-group label="Fecha:">
+                      <b-form-input
+                        v-model="form.fecha"
+                        type="date"
+                      ></b-form-input>
+                    </b-form-group>
+                  </b-col>
+                  <b-col cols="12" sm="12" md="6" lg="6" xl="6">
+                    <b-form-group
+                      label="Kilómetros:"
+                      description="Un número entero, y no las fracciones de kilómetro."
+                    >
+                      <b-form-input
+                        v-model="form.kilometros"
+                        type="number"
+                      ></b-form-input>
+                    </b-form-group>
+                  </b-col>
+                </b-row>
+              </div>
             </b-form>
 
             <div class="botonera">
@@ -162,6 +226,11 @@ export default {
         id_parte: null,
         id_tarea: null,
         detalles: null,
+        recurrente: 1,
+        fecha: null,
+        kilometros: null,
+        frecuenciaDias: null,
+        frecuenciaKms: null,
       },
       formShow: true,
       showOverlay: false,
@@ -175,6 +244,8 @@ export default {
       vehiculos: [],
       partes: [],
       tareas: [],
+
+      formRecurrente: true,
     };
   },
   methods: {
@@ -193,6 +264,14 @@ export default {
     },
     onSubmit(evt) {
       evt.preventDefault();
+
+      if (this.form.recurrente == 1) {
+        this.form.fecha = null;
+        this.form.kilometros = null;
+      } else {
+        this.form.frecuenciaDias = null;
+        this.form.frecuenciaKms = null;
+      }
 
       if (this.form.id) {
         this.update();
@@ -271,6 +350,11 @@ export default {
         id_parte: null,
         id_tarea: null,
         detalles: null,
+        recurrente: 1,
+        fecha: null,
+        kilometros: null,
+        frecuenciaDias: null,
+        frecuenciaKms: null,
       };
       this.formShow = false;
       this.$nextTick(() => {
@@ -302,10 +386,20 @@ export default {
     selected(valor) {
       this.btnEliminarDes = !valor;
     },
+    foo() {
+      if (this.form.recurrente == 1) {
+        this.formRecurrente = true;
+      } else {
+        this.formRecurrente = false;
+      }
+    },
   },
   computed: {
     rows() {
       return this.registros.length;
+    },
+    foo() {
+      return this.form.recurrente;
     },
   },
 };
