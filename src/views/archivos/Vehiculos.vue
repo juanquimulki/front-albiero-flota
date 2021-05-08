@@ -220,15 +220,15 @@ export default {
       ],
 
       form: {
-        id: "",
-        id_tipo: "",
-        descripcion: "",
-        alias: "",
-        patente: "",
-        id_tipo_comb: "",
-        anio: "",
-        fecha_venc_gtia: "",
-        id_chofer: "",
+        id: null,
+        id_tipo: null,
+        descripcion: null,
+        alias: null,
+        patente: null,
+        id_tipo_comb: null,
+        anio: null,
+        fecha_venc_gtia: null,
+        id_chofer: null,
       },
       formShow: true,
       showOverlay: false,
@@ -326,22 +326,22 @@ export default {
         Object.assign(this.form, item[0]);
         this.selected = true;
 
-        this.buscarKilometraje(this.form.id);
+        //this.buscarKilometraje(this.form.id);
       } else {
         this.selected = false;
       }
     },
     limpiar() {
       this.form = {
-        id: "",
-        id_tipo: "",
-        descripcion: "",
-        alias: "",
-        patente: "",
-        id_tipo_comb: "",
-        anio: "",
-        fecha_venc_gtia: "",
-        id_chofer: "",
+        id: null,
+        id_tipo: null,
+        descripcion: null,
+        alias: null,
+        patente: null,
+        id_tipo_comb: null,
+        anio: null,
+        fecha_venc_gtia: null,
+        id_chofer: null,
       };
       this.kilometraje = "";
       this.formShow = false;

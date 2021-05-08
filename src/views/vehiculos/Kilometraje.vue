@@ -15,6 +15,7 @@
                     <b-form-select
                       v-model="form.id_vehiculo"
                       :options="vehiculos"
+                      required
                     ></b-form-select>
                   </b-form-group>
                 </b-col>
@@ -176,12 +177,12 @@ export default {
       ],
 
       form: {
-        id: "",
-        id_vehiculo: "",
-        fecha_hora: "",
-        fecha: "",
-        hora: "",
-        kilometros: "",
+        id: null,
+        id_vehiculo: null,
+        fecha_hora: null,
+        fecha: null,
+        hora: null,
+        kilometros: null,
       },
       formShow: true,
       showOverlay: false,
@@ -293,12 +294,12 @@ export default {
     },
     limpiar() {
       this.form = {
-        id: "",
-        id_vehiculo: "",
-        fecha_hora: "",
-        fecha: "",
-        hora: "",
-        kilometros: "",
+        id: null,
+        id_vehiculo: null,
+        fecha_hora: null,
+        fecha: null,
+        hora: null,
+        kilometros: null,
       };
       this.formShow = false;
       this.$nextTick(() => {
