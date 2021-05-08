@@ -8,6 +8,8 @@ import Vehiculos from "../views/archivos/Vehiculos";
 import Kilometraje from "../views/vehiculos/Kilometraje";
 import Partes from "../views/vehiculos/Partes";
 import Tareas from "../views/vehiculos/Tareas";
+import Preventivo from "../views/mantenimiento/Preventivo";
+import Agenda from "../views/mantenimiento/Agenda";
 import Flota from "../views/reportes/Flota";
 import GarantiaFecha from "../views/reportes/GarantiaFecha";
 import Clave from "../views/usuarios/Clave";
@@ -63,6 +65,18 @@ const routes = [
     name: "flota",
     component: Flota,
     meta: { opcion: 8 },
+  },
+  {
+    path: "/preventivo/actividades",
+    name: "preventivo",
+    component: Preventivo,
+    meta: { opcion: 14 },
+  },
+  {
+    path: "/preventivo/agenda",
+    name: "agenda",
+    component: Agenda,
+    meta: { opcion: 15 },
   },
   {
     path: "/reportes/garantiafecha",
