@@ -74,6 +74,30 @@
                   </b-form-group>
                 </b-col>
               </b-row>
+              <b-row>
+                <b-col cols="12" sm="12" md="6" lg="6" xl="6">
+                  <b-form-group
+                    label="Última fecha:"
+                    description="Fecha de la última vez que se llevó a cabo el evento."
+                  >
+                    <b-form-input
+                      v-model="form.ultimaFecha"
+                      type="date"
+                    ></b-form-input>
+                  </b-form-group>
+                </b-col>
+                <b-col cols="12" sm="12" md="6" lg="6" xl="6">
+                  <b-form-group
+                    label="Último kilometraje:"
+                    description="Kilometraje en la última vez que se llevó a cabo el evento."
+                  >
+                    <b-form-input
+                      v-model="form.ultimoKms"
+                      type="number"
+                    ></b-form-input>
+                  </b-form-group>
+                </b-col>
+              </b-row>
             </b-form>
 
             <div class="botonera">
@@ -208,6 +232,8 @@ export default {
         detalles: null,
         frecuenciaDias: null,
         frecuenciaKms: null,
+        ultimaFecha: null,
+        ultimoKms: null,
       },
       formShow: true,
       showOverlay: false,
@@ -239,10 +265,17 @@ export default {
     },
     onSubmit(evt) {
       evt.preventDefault();
-      if (this.form.id) {
-        this.update();
+
+      if (this.validar()) {
+        this.limpiarProgramacion();
+
+        if (this.form.id) {
+          this.update();
+        } else {
+          this.insert();
+        }
       } else {
-        this.insert();
+        makeToast("Faltan ingresar algunos datos.", "warning");
       }
     },
     insert() {
@@ -318,12 +351,52 @@ export default {
         detalles: null,
         frecuenciaDias: null,
         frecuenciaKms: null,
+        ultimaFecha: null,
+        ultimoKms: null,
       };
       this.formShow = false;
       this.$nextTick(() => {
         this.formShow = true;
       });
       this.$refs.selectableTable.clearSelected();
+    },
+    hasValue(dummy) {
+      if (typeof dummy != "undefined" && dummy != null && dummy.trim() != "") {
+        return true;
+      }
+      return false;
+    },
+    validar() {
+      if (
+        this.hasValue(this.form.frecuenciaDias) ||
+        this.hasValue(this.form.frecuenciaKms)
+      ) {
+        if (
+          this.hasValue(this.form.frecuenciaDias) &&
+          !this.hasValue(this.form.ultimaFecha)
+        ) {
+          return false;
+        }
+        if (
+          this.hasValue(this.form.frecuenciaKms) &&
+          !this.hasValue(this.form.ultimoKms)
+        ) {
+          return false;
+        }
+        return true;
+      } else {
+        return false;
+      }
+    },
+    limpiarProgramacion() {
+      if (!this.hasValue(this.form.frecuenciaDias)) {
+        this.form.frecuenciaDias = null;
+        this.form.ultimaFecha = null;
+      }
+      if (!this.hasValue(this.form.frecuenciaKms)) {
+        this.form.frecuenciaKms = null;
+        this.form.ultimoKms = null;
+      }
     },
   },
   created() {
