@@ -326,7 +326,7 @@ export default {
         Object.assign(this.form, item[0]);
         this.selected = true;
 
-        //this.buscarKilometraje(this.form.id);
+        this.buscarKilometraje(this.form.id);
       } else {
         this.selected = false;
       }
