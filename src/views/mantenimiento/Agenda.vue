@@ -41,12 +41,23 @@
           ALBIERO SISTEMAS - Mantenimiento de Flota
           <br />Preventivo :: Agenda
         </div>
-        
-        <h5>Vencimientos por Fecha</h5><br class="salto">
-        <b-table :items="registrosFecha" :fields="fieldsFecha" responsive>
-        </b-table><br class="salto">
 
-        <h5>Vencimientos por Kilómetros</h5><br class="salto">
+        <h5>Vencimientos por Fecha</h5>
+        <br class="salto" />
+        <b-table :items="registrosFecha" :fields="fieldsFecha" responsive>
+          <template #cell(actions)="row">
+            <b-button
+              size="sm"
+              @click="alerta(row.item.descripcion_alias)"
+              class="mr-1"
+            >
+              Info modal
+            </b-button>
+          </template> </b-table
+        ><br class="salto" />
+
+        <h5>Vencimientos por Kilómetros</h5>
+        <br class="salto" />
         <b-table
           :items="registrosKilometros"
           :fields="fieldsKilometros"
@@ -104,6 +115,12 @@ export default {
           key: "vencimiento",
           label: "Días Venc.",
         },
+        {
+          key: "actions",
+          label: "Acciones",
+          tdClass: "columnaOculta",
+          thClass: "columnaOculta",
+        },
       ],
 
       fieldsKilometros: [
@@ -130,7 +147,7 @@ export default {
         {
           key: "fecha_hora",
           label: "Desde",
-          formatter: "dateFormat"
+          formatter: "dateFormat",
         },
         {
           key: "frecuenciaKms",
@@ -148,6 +165,9 @@ export default {
     };
   },
   methods: {
+    alerta(valor) {
+      alert(valor);
+    },
     dateFormat(value) {
       return moment(value).format("DD/MM/YYYY");
     },
@@ -157,11 +177,11 @@ export default {
           this.registrosFecha = response;
         }
       );
-      this.getData(this.endpoint + "/kilometros", { kilometros: this.kilometros }).then(
-        (response) => {
-          this.registrosKilometros = response;
-        }
-      );
+      this.getData(this.endpoint + "/kilometros", {
+        kilometros: this.kilometros,
+      }).then((response) => {
+        this.registrosKilometros = response;
+      });
     },
     print() {
       this.$htmlToPaper("printMe");
@@ -174,7 +194,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .botonera {
   margin-top: 30px;
 }
