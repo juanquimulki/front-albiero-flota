@@ -19,3 +19,11 @@
     font-family: arial;
     float: right;
 }
+
+h5 {
+    font-size: 16pt;
+}
+
+.salto {
+    display: none;
+}

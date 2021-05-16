@@ -10,11 +10,7 @@
             label="Fecha:"
             description="Puedes cambiarla para visualizar alertas anticipadas."
           >
-            <b-form-input
-              type="date"
-              v-model="fecha"
-              required
-            ></b-form-input>
+            <b-form-input type="date" v-model="fecha" required></b-form-input>
           </b-form-group>
         </b-col>
         <b-col cols="12" sm="12" md="6" lg="3" xl="3">
@@ -43,9 +39,20 @@
       <div id="printMe">
         <div class="tituloReporte">
           ALBIERO SISTEMAS - Mantenimiento de Flota
-          <br />Agenda
+          <br />Preventivo :: Agenda
         </div>
-        <b-table :items="registros" :fields="fields" responsive> </b-table>
+        
+        <h5>Vencimientos por Fecha</h5><br class="salto">
+        <b-table :items="registrosFecha" :fields="fieldsFecha" responsive>
+        </b-table><br class="salto">
+
+        <h5>Vencimientos por Kilómetros</h5><br class="salto">
+        <b-table
+          :items="registrosKilometros"
+          :fields="fieldsKilometros"
+          responsive
+        >
+        </b-table>
       </div>
     </b-card>
   </div>
@@ -63,46 +70,98 @@ export default {
       fecha: null,
       kilometros: 500,
 
-      endpoint: "agenda",
-      registros: [],
+      endpoint: "preventivo/agenda",
+      registrosFecha: [],
+      registrosKilometros: [],
 
-      fields: [
+      fieldsFecha: [
         {
-          key: "key1",
+          key: "descripcion_alias",
           label: "Vehículo",
         },
         {
-          key: "key2",
-          label: "Parte",
+          key: "parte",
+          label: "Parte / Pieza",
         },
         {
-          key: "key3",
+          key: "tarea",
           label: "Tarea",
         },
         {
-          key: "key4",
+          key: "detalles",
           label: "Detalles",
         },
         {
-          key: "key5",
+          key: "frecuenciaDias",
           label: "Frec. Días",
         },
         {
-          key: "key6",
+          key: "ultimaFecha",
           label: "Últ. Fecha",
+          formatter: "dateFormat",
         },
         {
-          key: "key7",
+          key: "vencimiento",
           label: "Días Venc.",
+        },
+      ],
+
+      fieldsKilometros: [
+        {
+          key: "descripcion_alias",
+          label: "Vehículo",
+        },
+        {
+          key: "parte",
+          label: "Parte / Pieza",
+        },
+        {
+          key: "tarea",
+          label: "Tarea",
+        },
+        {
+          key: "detalles",
+          label: "Detalles",
+        },
+        {
+          key: "kilometros",
+          label: "Kms. Actuales",
+        },
+        {
+          key: "fecha_hora",
+          label: "Desde",
+          formatter: "dateFormat"
+        },
+        {
+          key: "frecuenciaKms",
+          label: "Frec. Kms",
+        },
+        {
+          key: "ultimoKms",
+          label: "Últ. Kms.",
+        },
+        {
+          key: "vencimiento",
+          label: "Kms. Venc.",
         },
       ],
     };
   },
   methods: {
+    dateFormat(value) {
+      return moment(value).format("DD/MM/YYYY");
+    },
     buscarRegistros() {
-      this.getData(this.endpoint + "/fecha", this.fecha).then((response) => {
-        this.registros = response;
-      });
+      this.getData(this.endpoint + "/fecha", { fecha: this.fecha }).then(
+        (response) => {
+          this.registrosFecha = response;
+        }
+      );
+      this.getData(this.endpoint + "/kilometros", { kilometros: this.kilometros }).then(
+        (response) => {
+          this.registrosKilometros = response;
+        }
+      );
     },
     print() {
       this.$htmlToPaper("printMe");
@@ -110,7 +169,7 @@ export default {
   },
   created() {
     this.fecha = moment().format("YYYY-MM-DD");
-    //this.buscarRegistros();
+    this.buscarRegistros();
   },
 };
 </script>
