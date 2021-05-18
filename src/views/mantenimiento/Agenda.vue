@@ -53,7 +53,7 @@
           <template #cell(actions)="row">
             <b-button
               size="sm"
-              @click="alerta(row.item.descripcion_alias)"
+              @click="modalTarea(row.item, 1)"
               class="mr-1"
               title="Cumplimentar"
               variant="outline-primary"
@@ -62,7 +62,7 @@
             </b-button>
             <b-button
               size="sm"
-              @click="alerta(row.item.descripcion_alias)"
+              @click="modalTarea(row.item, 0)"
               class="mr-1"
               title="Desestimar"
               variant="outline-danger"
@@ -82,7 +82,7 @@
           <template #cell(actions)="row">
             <b-button
               size="sm"
-              @click="alerta(row.item.descripcion_alias)"
+              @click="modalTarea(row.item, 1)"
               class="mr-1"
               title="Cumplimentar"
               variant="outline-primary"
@@ -91,17 +91,94 @@
             </b-button>
             <b-button
               size="sm"
-              @click="alerta(row.item.descripcion_alias)"
+              @click="modalTarea(row.item, 0)"
               class="mr-1"
               title="Desestimar"
               variant="outline-danger"
             >
               <b-icon icon="trash" aria-hidden="true"></b-icon>
             </b-button>
-          </template>        
+          </template>
         </b-table>
       </div>
     </b-card>
+
+    <b-modal v-model="modalTareaShow" :title="tituloModalTarea">
+      <b-table stacked :items="tarea" borderless></b-table>
+
+      <!-- <b-row>
+        <b-col cols="12" sm="12" md="6" lg="6" xl="6">
+          <b-form-group label="Id:">
+            <b-form-input type="text" v-model="form.id" disabled></b-form-input>
+          </b-form-group>
+        </b-col>
+        <b-col cols="12" sm="12" md="6" lg="6" xl="6">
+          <b-form-group label="User:">
+            <b-form-input
+              type="text"
+              v-model="form.user"
+              disabled
+            ></b-form-input>
+          </b-form-group>
+        </b-col>
+      </b-row> -->
+      <b-row>
+        <b-col>
+          <b-form-group label="Usuario:">
+            <b-form-input
+              type="text"
+              v-model="form.usuario"
+              disabled
+            ></b-form-input>
+          </b-form-group>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col cols="12" sm="12" md="6" lg="6" xl="6">
+          <b-form-group label="Fecha:">
+            <b-form-input
+              type="date"
+              v-model="form.fecha"
+              required
+            ></b-form-input>
+          </b-form-group>
+        </b-col>
+        <b-col cols="12" sm="12" md="6" lg="6" xl="6">
+          <b-form-group label="Kilómetros:">
+            <b-form-input
+              type="number"
+              v-model="form.kilometros"
+              required
+            ></b-form-input>
+          </b-form-group>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col cols="12" sm="12" md="12" lg="12" xl="12">
+          <b-form-group label="Detalles:">
+            <b-form-textarea v-model="form.detalles" rows="3"></b-form-textarea>
+          </b-form-group>
+        </b-col>
+      </b-row>
+      <!-- <b-row>
+        <b-col cols="12" sm="12" md="6" lg="6" xl="6">
+          <b-form-group label="Cumplimentado:">
+            <b-form-input
+              type="text"
+              v-model="form.cumplimentado"
+              disabled
+            ></b-form-input>
+          </b-form-group>
+        </b-col>
+      </b-row> -->
+
+      <template #modal-footer>
+        <b-button variant="primary">Aceptar</b-button>
+        <b-button variant="outline-primary" @click="modalTareaShow = false"
+          >Cancelar</b-button
+        >
+      </template>
+    </b-modal>
   </div>
 </template>
 
@@ -122,6 +199,10 @@ export default {
       registrosKilometros: [],
 
       fieldsFecha: [
+        {
+          key: "id",
+          label: "#",
+        },
         {
           key: "descripcion_alias",
           label: "Vehículo",
@@ -160,6 +241,10 @@ export default {
       ],
 
       fieldsKilometros: [
+        {
+          key: "id",
+          label: "#",
+        },
         {
           key: "descripcion_alias",
           label: "Vehículo",
@@ -204,11 +289,48 @@ export default {
           thClass: "columnaOculta",
         },
       ],
+
+      modalTareaShow: false,
+      tituloModalTarea: null,
+      tarea: [],
+
+      form: {
+        id: null,
+        fecha: null,
+        kilometros: null,
+        user: null,
+        usuario: null,
+        detalles: null,
+        cumplimentado: null,
+      },
     };
   },
   methods: {
-    alerta(valor) {
-      alert(valor);
+    modalTarea(row, cumplimentado) {
+      if (cumplimentado) {
+        this.tituloModalTarea = "Cumplimentar Tarea";
+      } else {
+        this.tituloModalTarea = "Desestimar Tarea";
+      }
+
+      let info = {
+        Vehículo: `${row.descripcion} (${row.alias})`,
+        Parte: row.parte,
+        Tarea: row.tarea,
+        Detalles: row.detalles,
+      };
+      this.tarea = [];
+      this.tarea.push(info);
+
+      this.form.id = row.id;
+      this.form.user = this.$session.get("user");
+      this.form.usuario = `${this.$session.get("name")} (${this.$session.get(
+        "user"
+      )})`;
+      this.detalles = "";
+      this.form.cumplimentado = cumplimentado;
+
+      this.modalTareaShow = true;
     },
     dateFormat(value) {
       return moment(value).format("DD/MM/YYYY");
