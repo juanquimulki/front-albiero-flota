@@ -14,7 +14,10 @@
           </b-form-group>
         </b-col>
         <b-col cols="12" sm="12" md="6" lg="3" xl="3">
-          <b-form-group label="Kilómetros anticipados:">
+          <b-form-group
+            label="Kilómetros:"
+            description="Anticipación en kilómetros antes de su cumplimiento."
+          >
             <b-form-input
               type="number"
               v-model="kilometros"
@@ -39,7 +42,9 @@
       <div id="printMe">
         <div class="tituloReporte">
           ALBIERO SISTEMAS - Mantenimiento de Flota
-          <br />Preventivo :: Agenda
+          <br />Preventivo :: Agenda <br /><br />
+          Para la fecha: {{ fecha | dateFormat }}<br />
+          Kilómetros anticipados: {{ kilometros }}
         </div>
 
         <h5>Vencimientos por Fecha</h5>
@@ -50,8 +55,19 @@
               size="sm"
               @click="alerta(row.item.descripcion_alias)"
               class="mr-1"
+              title="Cumplimentar"
+              variant="outline-primary"
             >
-              Info modal
+              <b-icon icon="clipboard-check" aria-hidden="true"></b-icon>
+            </b-button>
+            <b-button
+              size="sm"
+              @click="alerta(row.item.descripcion_alias)"
+              class="mr-1"
+              title="Desestimar"
+              variant="outline-danger"
+            >
+              <b-icon icon="trash" aria-hidden="true"></b-icon>
             </b-button>
           </template> </b-table
         ><br class="salto" />
@@ -63,6 +79,26 @@
           :fields="fieldsKilometros"
           responsive
         >
+          <template #cell(actions)="row">
+            <b-button
+              size="sm"
+              @click="alerta(row.item.descripcion_alias)"
+              class="mr-1"
+              title="Cumplimentar"
+              variant="outline-primary"
+            >
+              <b-icon icon="clipboard-check" aria-hidden="true"></b-icon>
+            </b-button>
+            <b-button
+              size="sm"
+              @click="alerta(row.item.descripcion_alias)"
+              class="mr-1"
+              title="Desestimar"
+              variant="outline-danger"
+            >
+              <b-icon icon="trash" aria-hidden="true"></b-icon>
+            </b-button>
+          </template>        
         </b-table>
       </div>
     </b-card>
@@ -161,6 +197,12 @@ export default {
           key: "vencimiento",
           label: "Kms. Venc.",
         },
+        {
+          key: "actions",
+          label: "Acciones",
+          tdClass: "columnaOculta",
+          thClass: "columnaOculta",
+        },
       ],
     };
   },
@@ -185,6 +227,11 @@ export default {
     },
     print() {
       this.$htmlToPaper("printMe");
+    },
+  },
+  filters: {
+    dateFormat(value) {
+      return moment(value).format("DD/MM/YYYY");
     },
   },
   created() {
