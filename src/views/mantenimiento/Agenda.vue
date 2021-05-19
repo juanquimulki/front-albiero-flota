@@ -173,7 +173,7 @@
       </b-row> -->
 
       <template #modal-footer>
-        <b-button variant="primary">Aceptar</b-button>
+        <b-button variant="primary" @click="aceptarTarea">Aceptar</b-button>
         <b-button variant="outline-primary" @click="modalTareaShow = false"
           >Cancelar</b-button
         >
@@ -185,6 +185,8 @@
 <script>
 import Data from "../../data/data";
 import moment from "moment";
+
+import makeToast from "../../common/toast";
 
 export default {
   name: "Agenda",
@@ -327,13 +329,38 @@ export default {
       this.form.usuario = `${this.$session.get("name")} (${this.$session.get(
         "user"
       )})`;
-      this.detalles = "";
+      this.form.fecha = moment().format("YYYY-MM-DD");
+      this.form.kilometros = null;
+
+      this.form.detalles = null;
       this.form.cumplimentado = cumplimentado;
 
       this.modalTareaShow = true;
     },
-    dateFormat(value) {
-      return moment(value).format("DD/MM/YYYY");
+    aceptarTarea() {
+      if (this.validar()) {
+        this.postData("preventivo/tarea", this.form).then(() => {
+          this.modalTareaShow = false;
+        });
+      } else {
+        makeToast("Faltan ingresar algunos datos.", "warning");
+      }
+    },
+    hasValue(dummy) {
+      if (typeof dummy != "undefined" && dummy != null && dummy.trim() != "") {
+        return true;
+      }
+      return false;
+    },
+    validar() {
+      if (
+        this.hasValue(this.form.fecha) &&
+        this.hasValue(this.form.kilometros)
+      ) {
+        return true;
+      } else {
+        return false;
+      }
     },
     buscarRegistros() {
       this.getData(this.endpoint + "/fecha", { fecha: this.fecha }).then(
@@ -349,6 +376,9 @@ export default {
     },
     print() {
       this.$htmlToPaper("printMe");
+    },
+    dateFormat(value) {
+      return moment(value).format("DD/MM/YYYY");
     },
   },
   filters: {
