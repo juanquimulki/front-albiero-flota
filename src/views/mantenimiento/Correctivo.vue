@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h4>Preventivo <b-icon icon="arrow-right-short"></b-icon> Actividades</h4>
+    <h4>Correctivo <b-icon icon="arrow-right-short"></b-icon> Actividades</h4>
     <br />
     <b-row>
       <b-col order-xl="1" order-lg="1" order-md="1" order-sm="2" order="2">
@@ -192,7 +192,7 @@ import makeToast from "../../common/toast";
 import msgBoxConfirm from "../../common/confirm";
 
 export default {
-  name: "Preventivo",
+  name: "Correctivo",
   mixins: [Data],
   data() {
     return {

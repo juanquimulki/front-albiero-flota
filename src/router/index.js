@@ -9,6 +9,7 @@ import Kilometraje from "../views/vehiculos/Kilometraje";
 import Partes from "../views/vehiculos/Partes";
 import Tareas from "../views/vehiculos/Tareas";
 import Preventivo from "../views/mantenimiento/Preventivo";
+import Correctivo from "../views/mantenimiento/Correctivo";
 import Agenda from "../views/mantenimiento/Agenda";
 import Flota from "../views/reportes/Flota";
 import GarantiaFecha from "../views/reportes/GarantiaFecha";
@@ -77,6 +78,18 @@ const routes = [
     name: "agenda",
     component: Agenda,
     meta: { opcion: 15 },
+  },
+  {
+    path: "/correctivo/actividades",
+    name: "correctivo",
+    component: Correctivo,
+    meta: { opcion: 17 },
+  },
+  {
+    path: "/correctivo/agenda",
+    name: "agenda",
+    component: Agenda,
+    meta: { opcion: 18 },
   },
   {
     path: "/reportes/garantiafecha",
