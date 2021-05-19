@@ -341,6 +341,7 @@ export default {
       if (this.validar()) {
         this.postData("preventivo/tarea", this.form).then(() => {
           this.modalTareaShow = false;
+          this.buscarRegistros();
         });
       } else {
         makeToast("Faltan ingresar algunos datos.", "warning");
