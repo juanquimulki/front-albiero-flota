@@ -99,6 +99,35 @@
               <b-icon icon="trash" aria-hidden="true"></b-icon>
             </b-button>
           </template>
+        </b-table><br class="salto" />
+
+        <h5>Mantenimiento Correctivo</h5>
+        <br class="salto" />
+        <b-table
+          :items="registrosCorrectivo"
+          :fields="fieldsCorrectivo"
+          responsive
+        >
+          <!-- <template #cell(actions)="row">
+            <b-button
+              size="sm"
+              @click="modalTarea(row.item, 1)"
+              class="mr-1"
+              title="Cumplimentar"
+              variant="outline-primary"
+            >
+              <b-icon icon="clipboard-check" aria-hidden="true"></b-icon>
+            </b-button>
+            <b-button
+              size="sm"
+              @click="modalTarea(row.item, 0)"
+              class="mr-1"
+              title="Desestimar"
+              variant="outline-danger"
+            >
+              <b-icon icon="trash" aria-hidden="true"></b-icon>
+            </b-button>
+          </template> -->
         </b-table>
       </div>
     </b-card>
@@ -199,6 +228,7 @@ export default {
       endpoint: "preventivo/agenda",
       registrosFecha: [],
       registrosKilometros: [],
+      registrosCorrectivo: [],
 
       fieldsFecha: [
         {
@@ -292,6 +322,43 @@ export default {
         },
       ],
 
+      fieldsCorrectivo: [
+        {
+          key: "id",
+          label: "#",
+        },
+        {
+          key: "descripcion_alias",
+          label: "Vehículo",
+        },
+        {
+          key: "parte",
+          label: "Parte / Pieza",
+        },
+        {
+          key: "tarea",
+          label: "Tarea",
+        },
+        {
+          key: "detalles",
+          label: "Detalles",
+        },
+        {
+          key: "vencimientoDias",
+          label: "Días Venc.",
+        },
+        {
+          key: "vencimientoKms",
+          label: "Kms. Venc.",
+        },
+        {
+          key: "actions",
+          label: "Acciones",
+          tdClass: "columnaOculta",
+          thClass: "columnaOculta",
+        },
+      ],
+
       modalTareaShow: false,
       tituloModalTarea: null,
       tarea: [],
@@ -373,6 +440,9 @@ export default {
         kilometros: this.kilometros,
       }).then((response) => {
         this.registrosKilometros = response;
+      });
+      this.getData("correctivo/agenda", null).then((response) => {
+        this.registrosCorrectivo = response;
       });
     },
     print() {
