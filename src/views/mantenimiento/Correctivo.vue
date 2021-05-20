@@ -55,45 +55,26 @@
 
               <b-row>
                 <b-col cols="12" sm="12" md="6" lg="6" xl="6">
-                  <b-form-group label="Cada ... días:">
+                  <b-form-group
+                    label="Fecha"
+                    description="Fecha de ocurrencia del evento."
+                  >
                     <b-form-input
-                      v-model="form.frecuenciaDias"
+                      v-model="form.fecha"
                       type="number"
+                      required
                     ></b-form-input>
                   </b-form-group>
                 </b-col>
                 <b-col cols="12" sm="12" md="6" lg="6" xl="6">
                   <b-form-group
-                    label="Cada ... kilómetros:"
-                    description="Un número entero, y no las fracciones de kilómetro."
+                    label="Kilómetros:"
+                    description="Kilometraje al ocurrir el evento."
                   >
                     <b-form-input
-                      v-model="form.frecuenciaKms"
+                      v-model="form.kilometros"
                       type="number"
-                    ></b-form-input>
-                  </b-form-group>
-                </b-col>
-              </b-row>
-              <b-row>
-                <b-col cols="12" sm="12" md="6" lg="6" xl="6">
-                  <b-form-group
-                    label="Última fecha:"
-                    description="Fecha de la última vez que se llevó a cabo el evento."
-                  >
-                    <b-form-input
-                      v-model="form.ultimaFecha"
-                      type="date"
-                    ></b-form-input>
-                  </b-form-group>
-                </b-col>
-                <b-col cols="12" sm="12" md="6" lg="6" xl="6">
-                  <b-form-group
-                    label="Último kilometraje:"
-                    description="Kilometraje en la última vez que se llevó a cabo el evento."
-                  >
-                    <b-form-input
-                      v-model="form.ultimoKms"
-                      type="number"
+                      required
                     ></b-form-input>
                   </b-form-group>
                 </b-col>
@@ -196,7 +177,7 @@ export default {
   mixins: [Data],
   data() {
     return {
-      endpoint: "preventivo",
+      endpoint: "correctivo",
       registros: [],
 
       currentPage: 1,
@@ -230,10 +211,8 @@ export default {
         id_parte: null,
         id_tarea: null,
         detalles: null,
-        frecuenciaDias: null,
-        frecuenciaKms: null,
-        ultimaFecha: null,
-        ultimoKms: null,
+        fecha: null,
+        kilometros: null,
       },
       formShow: true,
       showOverlay: false,
@@ -266,16 +245,10 @@ export default {
     onSubmit(evt) {
       evt.preventDefault();
 
-      if (this.validar()) {
-        this.limpiarProgramacion();
-
-        if (this.form.id) {
-          this.update();
-        } else {
-          this.insert();
-        }
+      if (this.form.id) {
+        this.update();
       } else {
-        makeToast("Faltan ingresar algunos datos.", "warning");
+        this.insert();
       }
     },
     insert() {
@@ -349,54 +322,14 @@ export default {
         id_parte: null,
         id_tarea: null,
         detalles: null,
-        frecuenciaDias: null,
-        frecuenciaKms: null,
-        ultimaFecha: null,
-        ultimoKms: null,
+        fecha: null,
+        kilometros: null,
       };
       this.formShow = false;
       this.$nextTick(() => {
         this.formShow = true;
       });
       this.$refs.selectableTable.clearSelected();
-    },
-    hasValue(dummy) {
-      if (typeof dummy != "undefined" && dummy != null && dummy.trim() != "") {
-        return true;
-      }
-      return false;
-    },
-    validar() {
-      if (
-        this.hasValue(this.form.frecuenciaDias) ||
-        this.hasValue(this.form.frecuenciaKms)
-      ) {
-        if (
-          this.hasValue(this.form.frecuenciaDias) &&
-          !this.hasValue(this.form.ultimaFecha)
-        ) {
-          return false;
-        }
-        if (
-          this.hasValue(this.form.frecuenciaKms) &&
-          !this.hasValue(this.form.ultimoKms)
-        ) {
-          return false;
-        }
-        return true;
-      } else {
-        return false;
-      }
-    },
-    limpiarProgramacion() {
-      if (!this.hasValue(this.form.frecuenciaDias)) {
-        this.form.frecuenciaDias = null;
-        this.form.ultimaFecha = null;
-      }
-      if (!this.hasValue(this.form.frecuenciaKms)) {
-        this.form.frecuenciaKms = null;
-        this.form.ultimoKms = null;
-      }
     },
   },
   created() {
