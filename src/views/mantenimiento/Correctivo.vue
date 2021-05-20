@@ -56,12 +56,12 @@
               <b-row>
                 <b-col cols="12" sm="12" md="6" lg="6" xl="6">
                   <b-form-group
-                    label="Fecha"
+                    label="Fecha:"
                     description="Fecha de ocurrencia del evento."
                   >
                     <b-form-input
                       v-model="form.fecha"
-                      type="number"
+                      type="date"
                       required
                     ></b-form-input>
                   </b-form-group>
