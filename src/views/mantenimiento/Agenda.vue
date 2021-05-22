@@ -47,13 +47,13 @@
           Kilómetros anticipados: {{ kilometros }}
         </div>
 
-        <h5>Vencimientos por Fecha</h5>
+        <h5>Preventivo por Fecha</h5>
         <br class="salto" />
         <b-table :items="registrosFecha" :fields="fieldsFecha" responsive>
           <template #cell(actions)="row">
             <b-button
               size="sm"
-              @click="modalTarea(row.item, 1)"
+              @click="modalTarea(row.item, 1, 'P')"
               class="mr-1"
               title="Cumplimentar"
               variant="outline-primary"
@@ -62,7 +62,7 @@
             </b-button>
             <b-button
               size="sm"
-              @click="modalTarea(row.item, 0)"
+              @click="modalTarea(row.item, 0, 'P')"
               class="mr-1"
               title="Desestimar"
               variant="outline-danger"
@@ -72,17 +72,21 @@
           </template> </b-table
         ><br class="salto" />
 
-        <h5>Vencimientos por Kilómetros</h5>
+        <h5>Preventivo por Kilómetros</h5>
         <br class="salto" />
         <b-table
           :items="registrosKilometros"
           :fields="fieldsKilometros"
           responsive
         >
+          <template #cell(kilometros)="row">
+            {{ row.item.kilometros }} ({{ row.item.fecha_hora | dateFormat }})
+          </template>
+
           <template #cell(actions)="row">
             <b-button
               size="sm"
-              @click="modalTarea(row.item, 1)"
+              @click="modalTarea(row.item, 1, 'P')"
               class="mr-1"
               title="Cumplimentar"
               variant="outline-primary"
@@ -91,15 +95,15 @@
             </b-button>
             <b-button
               size="sm"
-              @click="modalTarea(row.item, 0)"
+              @click="modalTarea(row.item, 0, 'P')"
               class="mr-1"
               title="Desestimar"
               variant="outline-danger"
             >
               <b-icon icon="trash" aria-hidden="true"></b-icon>
             </b-button>
-          </template>
-        </b-table><br class="salto" />
+          </template> </b-table
+        ><br class="salto" />
 
         <h5>Mantenimiento Correctivo</h5>
         <br class="salto" />
@@ -108,10 +112,10 @@
           :fields="fieldsCorrectivo"
           responsive
         >
-          <!-- <template #cell(actions)="row">
+          <template #cell(actions)="row">
             <b-button
               size="sm"
-              @click="modalTarea(row.item, 1)"
+              @click="modalTarea(row.item, 1, 'C')"
               class="mr-1"
               title="Cumplimentar"
               variant="outline-primary"
@@ -120,14 +124,14 @@
             </b-button>
             <b-button
               size="sm"
-              @click="modalTarea(row.item, 0)"
+              @click="modalTarea(row.item, 0, 'C')"
               class="mr-1"
               title="Desestimar"
               variant="outline-danger"
             >
               <b-icon icon="trash" aria-hidden="true"></b-icon>
             </b-button>
-          </template> -->
+          </template>
         </b-table>
       </div>
     </b-card>
@@ -195,6 +199,15 @@
             <b-form-input
               type="text"
               v-model="form.cumplimentado"
+              disabled
+            ></b-form-input>
+          </b-form-group>
+        </b-col>
+        <b-col cols="12" sm="12" md="6" lg="6" xl="6">
+          <b-form-group label="Mantenimiento:">
+            <b-form-input
+              type="text"
+              v-model="form.mantenimiento"
               disabled
             ></b-form-input>
           </b-form-group>
@@ -298,11 +311,6 @@ export default {
           label: "Kms. Actuales",
         },
         {
-          key: "fecha_hora",
-          label: "Desde",
-          formatter: "dateFormat",
-        },
-        {
           key: "frecuenciaKms",
           label: "Frec. Kms",
         },
@@ -371,11 +379,12 @@ export default {
         usuario: null,
         detalles: null,
         cumplimentado: null,
+        mantenimiento: null,
       },
     };
   },
   methods: {
-    modalTarea(row, cumplimentado) {
+    modalTarea(row, cumplimentado, mantenimiento) {
       if (cumplimentado) {
         this.tituloModalTarea = "Cumplimentar Tarea";
       } else {
@@ -401,15 +410,23 @@ export default {
 
       this.form.detalles = null;
       this.form.cumplimentado = cumplimentado;
+      this.form.mantenimiento = mantenimiento;
 
       this.modalTareaShow = true;
     },
     aceptarTarea() {
       if (this.validar()) {
-        this.postData("preventivo/tarea", this.form).then(() => {
-          this.modalTareaShow = false;
-          this.buscarRegistros();
-        });
+        if (this.form.mantenimiento == "P") {
+          this.postData("preventivo/tarea", this.form).then(() => {
+            this.modalTareaShow = false;
+            this.buscarRegistros();
+          });
+        } else {
+          this.postData("correctivo/tarea", this.form).then(() => {
+            this.modalTareaShow = false;
+            this.buscarRegistros();
+          });
+        }
       } else {
         makeToast("Faltan ingresar algunos datos.", "warning");
       }
