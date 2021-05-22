@@ -39,9 +39,15 @@ const routes = [
   },
   {
     path: "/archivos/vehiculos",
-    name: "vehiculos",
+    name: "vehiculosArchivos",
     component: Vehiculos,
     meta: { opcion: 5 },
+  },
+  {
+    path: "/archivos/vehiculos",
+    name: "vehiculosVehiculos",
+    component: Vehiculos,
+    meta: { opcion: 19 },
   },
   {
     path: "/vehiculos/kilometraje",
@@ -75,7 +81,7 @@ const routes = [
   },
   {
     path: "/preventivo/agenda",
-    name: "agenda",
+    name: "agendaPreventivo",
     component: Agenda,
     meta: { opcion: 15 },
   },
@@ -87,7 +93,7 @@ const routes = [
   },
   {
     path: "/correctivo/agenda",
-    name: "agenda",
+    name: "agendaCorrectivo",
     component: Agenda,
     meta: { opcion: 18 },
   },
