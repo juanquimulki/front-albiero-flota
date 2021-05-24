@@ -13,6 +13,7 @@ import Correctivo from "../views/mantenimiento/Correctivo";
 import Agenda from "../views/mantenimiento/Agenda";
 import Flota from "../views/reportes/Flota";
 import Garantia from "../views/reportes/Garantia";
+import Historial from "../views/reportes/Historial";
 import Clave from "../views/usuarios/Clave";
 import Usuarios from "../views/usuarios/Usuarios";
 
@@ -102,6 +103,12 @@ const routes = [
     name: "garantia",
     component: Garantia,
     meta: { opcion: 6 },
+  },
+  {
+    path: "/reportes/historial",
+    name: "historial",
+    component: Historial,
+    meta: { opcion: 20 },
   },
   {
     path: "/usuarios/usuarios",
