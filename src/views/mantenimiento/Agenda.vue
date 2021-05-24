@@ -16,7 +16,7 @@
         <b-col cols="12" sm="12" md="6" lg="3" xl="3">
           <b-form-group
             label="Kilómetros:"
-            description="Anticipación en kilómetros antes de su cumplimiento."
+            description="Puedes cambiarlos para calcular kilómetros antes de su cumplimiento."
           >
             <b-form-input
               type="number"
@@ -236,7 +236,7 @@ export default {
   data() {
     return {
       fecha: null,
-      kilometros: 500,
+      kilometros: 0,
 
       endpoint: "preventivo/agenda",
       registrosFecha: [],
@@ -309,6 +309,10 @@ export default {
         {
           key: "kilometros",
           label: "Kms. Actuales",
+        },
+        {
+          key: "kmsCalculados",
+          label: "Kms. Calculados",
         },
         {
           key: "frecuenciaKms",
@@ -448,6 +452,7 @@ export default {
       }
     },
     buscarRegistros() {
+      makeToast("Mostrando registros...", "success");
       this.getData(this.endpoint + "/fecha", { fecha: this.fecha }).then(
         (response) => {
           this.registrosFecha = response;
