@@ -78,7 +78,7 @@
                   </b-form-group>
                 </b-col>
                 <b-col cols="6" sm="6" md="6" lg="6" xl="6">
-                  <b-form-group label="Vencimiento de Garantía:">
+                  <b-form-group label="Vencimiento de Garantía (Fecha):">
                     <b-form-input
                       v-model="form.fecha_venc_gtia"
                       type="date"
@@ -113,9 +113,23 @@
                 <b-col cols="12" sm="12" md="12" lg="6" xl="6">
                   <b-form-group
                     label="Kilometraje:"
-                    description="Capturado de la última actulización de Kilometraje."
+                    description="Obtenido de la última actulización de Kilometraje."
                   >
                     <b-form-input v-model="kilometraje" disabled></b-form-input>
+                  </b-form-group>
+                </b-col>
+                <b-col cols="12" sm="12" md="12" lg="6" xl="6">
+                  <b-form-group
+                    label="Vencimiento de Garantía (Kms.):"
+                    description="Un número entero, y no las fracciones de kilómetro."
+                  >
+                    <b-form-input
+                      type="number"
+                      v-model="form.kms_venc_gtia"
+                      maxlength="50"
+                      min="1"
+                      max="1000000"
+                    ></b-form-input>
                   </b-form-group>
                 </b-col>
               </b-row>
@@ -228,6 +242,7 @@ export default {
         id_tipo_comb: null,
         anio: null,
         fecha_venc_gtia: null,
+        kms_venc_gtia: null,
         id_chofer: null,
       },
       formShow: true,
@@ -341,6 +356,7 @@ export default {
         id_tipo_comb: null,
         anio: null,
         fecha_venc_gtia: null,
+        kms_venc_gtia: null,
         id_chofer: null,
       };
       this.kilometraje = "";

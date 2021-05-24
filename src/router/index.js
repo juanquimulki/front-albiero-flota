@@ -12,7 +12,7 @@ import Preventivo from "../views/mantenimiento/Preventivo";
 import Correctivo from "../views/mantenimiento/Correctivo";
 import Agenda from "../views/mantenimiento/Agenda";
 import Flota from "../views/reportes/Flota";
-import GarantiaFecha from "../views/reportes/GarantiaFecha";
+import Garantia from "../views/reportes/Garantia";
 import Clave from "../views/usuarios/Clave";
 import Usuarios from "../views/usuarios/Usuarios";
 
@@ -68,12 +68,6 @@ const routes = [
     meta: { opcion: 12 },
   },
   {
-    path: "/reportes/flota",
-    name: "flota",
-    component: Flota,
-    meta: { opcion: 8 },
-  },
-  {
     path: "/preventivo/actividades",
     name: "preventivo",
     component: Preventivo,
@@ -98,9 +92,15 @@ const routes = [
     meta: { opcion: 18 },
   },
   {
-    path: "/reportes/garantiafecha",
-    name: "garantiafecha",
-    component: GarantiaFecha,
+    path: "/reportes/flota",
+    name: "flota",
+    component: Flota,
+    meta: { opcion: 8 },
+  },
+  {
+    path: "/reportes/garantia",
+    name: "garantia",
+    component: Garantia,
     meta: { opcion: 6 },
   },
   {

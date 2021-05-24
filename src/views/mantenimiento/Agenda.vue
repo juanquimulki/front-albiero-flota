@@ -235,10 +235,10 @@ export default {
   mixins: [Data],
   data() {
     return {
+      endpoint: "preventivo/agenda",
       fecha: null,
       kilometros: 0,
 
-      endpoint: "preventivo/agenda",
       registrosFecha: [],
       registrosKilometros: [],
       registrosCorrectivo: [],
