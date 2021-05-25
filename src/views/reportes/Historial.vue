@@ -46,7 +46,29 @@
           <br />Reporte :: Historial de Servicios
         </div>
 
-        <b-table :items="items" :fields="fields" responsive> </b-table>
+        <b-table :items="items" :fields="fields" responsive>
+          <template #cell(resultado)="row">
+            <b-badge
+              v-if="row.item.resultado == 'CUMPLIMENTADO'"
+              pill
+              variant="primary"
+              >{{ row.item.resultado }}</b-badge
+            >
+            <b-badge v-else pill variant="danger">{{
+              row.item.resultado
+            }}</b-badge>
+          </template>
+          <template #cell(mantenimiento)="row">
+            <b-badge
+              v-if="row.item.mantenimiento == 'PREVENTIVO'"
+              variant="warning"
+              >{{ row.item.mantenimiento }}</b-badge
+            >
+            <b-badge v-else variant="success">{{
+              row.item.mantenimiento
+            }}</b-badge>
+          </template>
+        </b-table>
       </div>
     </b-card>
   </div>
@@ -72,7 +94,53 @@ export default {
       vehiculos: [],
 
       items: null,
-      fields: [],
+      fields: [
+        {
+          key: "descripcion",
+          label: "Vehículo",
+        },
+        {
+          key: "abrev",
+          label: "Chofer",
+        },
+        {
+          key: "parte",
+          label: "Parte",
+        },
+        {
+          key: "tarea",
+          label: "Tarea",
+        },
+        {
+          key: "detallesMantenimiento",
+          label: "Detalles",
+        },
+        {
+          key: "resultado",
+          label: "Resultado",
+        },
+        {
+          key: "user",
+          label: "Usuario",
+        },
+        {
+          key: "fecha",
+          label: "Fecha",
+          formatter: "dateFormat",
+        },
+        {
+          key: "kilometros",
+          label: "Kilómetros",
+        },
+        {
+          key: "detallesTarea",
+          label: "Detalles",
+        },
+        {
+          key: "mantenimiento",
+          label: "Mantenimiento",
+        },
+      ],
     };
   },
   methods: {
@@ -107,11 +175,12 @@ export default {
       });
 
       let valor = {
-        id: 0,
+        value: 0,
         text: "(Todos...)",
       };
 
       this.vehiculos.unshift(valor);
+      this.id_vehiculo = 0;
     });
 
     this.desde = moment().format("YYYY-MM-DD");
