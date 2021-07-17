@@ -5,6 +5,24 @@
     margin-bottom: 15px;
 }
 
+.ordenTitulo {
+    font-weight: bold;
+    font-size: 16pt;
+    text-align: center;
+    border-bottom: 2px solid black;
+    margin-bottom: 20px;
+}
+
+.ordenFirma {
+    width: 30%;
+    float: right;
+    margin-right: 100px;
+    margin-top: 100px;
+    text-align: center;
+    font-size: 10pt;
+    border-top: 1px dashed black;
+}
+
 .table {
     width: 100%;
     font-family: arial;

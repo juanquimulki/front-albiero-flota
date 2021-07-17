@@ -69,6 +69,17 @@
             >
               <b-icon icon="trash" aria-hidden="true"></b-icon>
             </b-button>
+            <b-button
+              size="sm"
+              @click="
+                modalOrden(row.item, 'Mantenimiento Preventivo por Fecha')
+              "
+              class="mr-1"
+              title="Orden de Servicio"
+              variant="outline-success"
+            >
+              <b-icon icon="printer" aria-hidden="true"></b-icon>
+            </b-button>
           </template> </b-table
         ><br class="salto" />
 
@@ -102,6 +113,17 @@
             >
               <b-icon icon="trash" aria-hidden="true"></b-icon>
             </b-button>
+            <b-button
+              size="sm"
+              @click="
+                modalOrden(row.item, 'Mantenimiento Preventivo por Kilómetros')
+              "
+              class="mr-1"
+              title="Orden de Servicio"
+              variant="outline-success"
+            >
+              <b-icon icon="printer" aria-hidden="true"></b-icon>
+            </b-button>
           </template> </b-table
         ><br class="salto" />
 
@@ -131,6 +153,15 @@
             >
               <b-icon icon="trash" aria-hidden="true"></b-icon>
             </b-button>
+            <b-button
+              size="sm"
+              @click="modalOrden(row.item, 'Mantenimiento Correctivo')"
+              class="mr-1"
+              title="Orden de Servicio"
+              variant="outline-success"
+            >
+              <b-icon icon="printer" aria-hidden="true"></b-icon>
+            </b-button>
           </template>
         </b-table>
       </div>
@@ -138,23 +169,6 @@
 
     <b-modal v-model="modalTareaShow" :title="tituloModalTarea">
       <b-table stacked :items="tarea" borderless></b-table>
-
-      <!-- <b-row>
-        <b-col cols="12" sm="12" md="6" lg="6" xl="6">
-          <b-form-group label="Id:">
-            <b-form-input type="text" v-model="form.id" disabled></b-form-input>
-          </b-form-group>
-        </b-col>
-        <b-col cols="12" sm="12" md="6" lg="6" xl="6">
-          <b-form-group label="User:">
-            <b-form-input
-              type="text"
-              v-model="form.user"
-              disabled
-            ></b-form-input>
-          </b-form-group>
-        </b-col>
-      </b-row> -->
       <b-row>
         <b-col>
           <b-form-group label="Usuario:">
@@ -193,26 +207,6 @@
           </b-form-group>
         </b-col>
       </b-row>
-      <!-- <b-row>
-        <b-col cols="12" sm="12" md="6" lg="6" xl="6">
-          <b-form-group label="Cumplimentado:">
-            <b-form-input
-              type="text"
-              v-model="form.cumplimentado"
-              disabled
-            ></b-form-input>
-          </b-form-group>
-        </b-col>
-        <b-col cols="12" sm="12" md="6" lg="6" xl="6">
-          <b-form-group label="Mantenimiento:">
-            <b-form-input
-              type="text"
-              v-model="form.mantenimiento"
-              disabled
-            ></b-form-input>
-          </b-form-group>
-        </b-col>
-      </b-row> -->
 
       <template #modal-footer>
         <b-button variant="primary" @click="aceptarTarea">Aceptar</b-button>
@@ -220,6 +214,51 @@
           >Cancelar</b-button
         >
       </template>
+    </b-modal>
+
+    <b-modal v-model="modalOrdenShow" :title="tituloModalOrden">
+      <b-row>
+        <b-col>
+          <b-form-group label="Proveedor:">
+            <b-form-select
+              v-model="proveedor"
+              :options="proveedores"
+            ></b-form-select>
+          </b-form-group>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col>
+          <b-form-group label="Responsable:">
+            <b-form-select v-model="chofer" :options="choferes"></b-form-select>
+          </b-form-group>
+        </b-col>
+      </b-row>
+
+      <template #modal-footer>
+        <b-button variant="primary" @click="printOrden">Imprimir</b-button>
+        <b-button variant="outline-primary" @click="modalOrdenShow = false"
+          >Cancelar</b-button
+        >
+      </template>
+
+      <div id="printMeOrden" class="ordenServicio">
+        <div class="ordenTitulo">ORDEN DE SERVICIO</div>
+        <div class="ordenTexto">
+          Autorizo a <strong>{{ this.chofer }}</strong> a solicitar a
+          <strong>{{ this.proveedor }}</strong> el servicio de
+          <strong>{{ orden.tarea }} - {{ orden.detalles }}</strong> en
+          <strong>{{ orden.parte }}</strong> para el vehículo
+          <strong>{{ orden.vehiculo }}</strong> debido a
+          <strong>{{ orden.mantenimiento }}</strong
+          >.
+        </div>
+        <div class="ordenFirma">
+          Firma y Aclaración<br /><strong>ALBIERO HNOS. SRL</strong><br />{{
+            orden.fecha
+          }}
+        </div>
+      </div>
     </b-modal>
   </div>
 </template>
@@ -354,7 +393,7 @@ export default {
         {
           key: "patente",
           label: "Patente",
-        },        
+        },
         {
           key: "parte",
           label: "Parte / Pieza",
@@ -384,7 +423,9 @@ export default {
       ],
 
       modalTareaShow: false,
+      modalOrdenShow: false,
       tituloModalTarea: null,
+      tituloModalOrden: "Orden de Servicio",
       tarea: [],
 
       form: {
@@ -397,6 +438,12 @@ export default {
         cumplimentado: null,
         mantenimiento: null,
       },
+      orden: {},
+
+      proveedores: [],
+      proveedor: null,
+      choferes: [],
+      chofer: null,
     };
   },
   methods: {
@@ -429,6 +476,18 @@ export default {
       this.form.mantenimiento = mantenimiento;
 
       this.modalTareaShow = true;
+    },
+    modalOrden(row, mant) {
+      this.orden = {
+        responsable: "Juan Mulki",
+        vehiculo: `${row.patente} - ${row.descripcion} (${row.alias})`,
+        tarea: row.tarea,
+        parte: row.parte,
+        detalles: row.detalles,
+        mantenimiento: mant,
+        fecha: moment().format("DD/MM/YYYY"),
+      };
+      this.modalOrdenShow = true;
     },
     aceptarTarea() {
       if (this.validar()) {
@@ -482,6 +541,9 @@ export default {
     print() {
       this.$htmlToPaper("printMe");
     },
+    printOrden() {
+      this.$htmlToPaper("printMeOrden");
+    },
     dateFormat(value) {
       return moment(value).format("DD/MM/YYYY");
     },
@@ -494,6 +556,17 @@ export default {
   created() {
     this.fecha = moment().format("YYYY-MM-DD");
     this.buscarRegistros();
+
+    this.getData("proveedor", null).then((response) => {
+      this.proveedores = response.map((x) => {
+        return { value: x.razon_social, text: x.razon_social };
+      });
+    });
+    this.getData("chofer", null).then((response) => {
+      this.choferes = response.map((x) => {
+        return { value: x.apenom, text: x.apenom };
+      });
+    });
   },
 };
 </script>
@@ -503,6 +576,9 @@ export default {
   margin-top: 30px;
 }
 .tituloReporte {
+  display: none;
+}
+.ordenServicio {
   display: none;
 }
 </style>
