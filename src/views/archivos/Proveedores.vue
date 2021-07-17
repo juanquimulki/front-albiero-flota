@@ -9,25 +9,11 @@
           <br />
           <div class="content-card">
             <b-form @submit="onSubmit" v-if="formShow" ref="form">
-              <b-form-group
-                label="Nombre completo:"
-                description="Apellidos y nombres del chofer. Ej: PEREZ, Juan Carlos."
-              >
+              <b-form-group label="Razón Social:">
                 <b-form-input
-                  v-model="form.apenom"
+                  v-model="form.razon_social"
                   required
-                  maxlength="50"
-                ></b-form-input>
-              </b-form-group>
-
-              <b-form-group
-                label="Abreviatura:"
-                description="Nombre abreviado o alias del chofer. Ej: jperez."
-              >
-                <b-form-input
-                  v-model="form.abrev"
-                  required
-                  maxlength="10"
+                  maxlength="40"
                 ></b-form-input>
               </b-form-group>
             </b-form>
@@ -96,11 +82,11 @@ import makeToast from "../../common/toast";
 import msgBoxConfirm from "../../common/confirm";
 
 export default {
-  name: "Choferes",
+  name: "Proveedores",
   mixins: [Data],
   data() {
     return {
-      endpoint: "chofer",
+      endpoint: "proveedor",
       registros: [],
 
       fields: [
@@ -109,19 +95,14 @@ export default {
           label: "#",
         },
         {
-          key: "apenom",
-          label: "Nombre",
-        },
-        {
-          key: "abrev",
-          label: "Abreviatura",
+          key: "razon_social",
+          label: "Razón Social",
         },
       ],
 
       form: {
         id: "",
-        apenom: "",
-        abrev: "",
+        razon_social: "",
       },
       formShow: true,
       showOverlay: false,
@@ -224,8 +205,7 @@ export default {
     limpiar() {
       this.form = {
         id: "",
-        apenom: "",
-        abrev: "",
+        razon_social: "",
       };
       this.formShow = false;
       this.$nextTick(() => {

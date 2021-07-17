@@ -9,25 +9,11 @@
           <br />
           <div class="content-card">
             <b-form @submit="onSubmit" v-if="formShow" ref="form">
-              <b-form-group
-                label="Nombre completo:"
-                description="Apellidos y nombres del chofer. Ej: PEREZ, Juan Carlos."
-              >
+              <b-form-group label="Descripción:">
                 <b-form-input
-                  v-model="form.apenom"
+                  v-model="form.descripcion"
                   required
                   maxlength="50"
-                ></b-form-input>
-              </b-form-group>
-
-              <b-form-group
-                label="Abreviatura:"
-                description="Nombre abreviado o alias del chofer. Ej: jperez."
-              >
-                <b-form-input
-                  v-model="form.abrev"
-                  required
-                  maxlength="10"
                 ></b-form-input>
               </b-form-group>
             </b-form>
@@ -96,11 +82,11 @@ import makeToast from "../../common/toast";
 import msgBoxConfirm from "../../common/confirm";
 
 export default {
-  name: "Choferes",
+  name: "Repuestos",
   mixins: [Data],
   data() {
     return {
-      endpoint: "chofer",
+      endpoint: "repuesto",
       registros: [],
 
       fields: [
@@ -109,19 +95,14 @@ export default {
           label: "#",
         },
         {
-          key: "apenom",
-          label: "Nombre",
-        },
-        {
-          key: "abrev",
-          label: "Abreviatura",
+          key: "descripcion",
+          label: "Descripción",
         },
       ],
 
       form: {
         id: "",
-        apenom: "",
-        abrev: "",
+        descripcion: "",
       },
       formShow: true,
       showOverlay: false,
@@ -224,8 +205,7 @@ export default {
     limpiar() {
       this.form = {
         id: "",
-        apenom: "",
-        abrev: "",
+        descripcion: "",
       };
       this.formShow = false;
       this.$nextTick(() => {
