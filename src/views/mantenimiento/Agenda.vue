@@ -253,6 +253,10 @@ export default {
           label: "Vehículo",
         },
         {
+          key: "patente",
+          label: "Patente",
+        },
+        {
           key: "parte",
           label: "Parte / Pieza",
         },
@@ -293,6 +297,10 @@ export default {
         {
           key: "descripcion_alias",
           label: "Vehículo",
+        },
+        {
+          key: "patente",
+          label: "Patente",
         },
         {
           key: "parte",
@@ -343,6 +351,10 @@ export default {
           key: "descripcion_alias",
           label: "Vehículo",
         },
+        {
+          key: "patente",
+          label: "Patente",
+        },        
         {
           key: "parte",
           label: "Parte / Pieza",
