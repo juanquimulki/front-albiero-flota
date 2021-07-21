@@ -1,7 +1,7 @@
 <template>
   <div>
     <h4>
-      Reporte <b-icon icon="arrow-right-short"></b-icon> Historial de Servicios
+      Más Datos (para cumplimentaciones)
     </h4>
     <br />
 
@@ -30,9 +30,6 @@
           <div class="botonera">
             <b-button @click="buscarRegistros" variant="info"
               ><b-icon icon="search"></b-icon>&nbsp;Consultar</b-button
-            >&nbsp;
-            <b-button @click="print" variant="success"
-              ><b-icon-file-text></b-icon-file-text>&nbsp;Imprimir</b-button
             >
           </div>
         </b-col>
@@ -40,12 +37,6 @@
     </b-card>
 
     <b-card>
-      <div id="printMe">
-        <div class="tituloReporte">
-          ALBIERO SISTEMAS - Mantenimiento de Flota
-          <br />Reporte :: Historial de Servicios
-        </div>
-
         <b-table :items="items" :fields="fields" responsive>
           <template #cell(resultado)="row">
             <b-badge
@@ -69,9 +60,8 @@
             }}</b-badge>
           </template>
         </b-table>
-      </div>
     </b-card>
-  </div>
+    </div>
 </template>
 
 <script>
@@ -81,7 +71,7 @@ import moment from "moment";
 import makeToast from "../../common/toast";
 
 export default {
-  name: "Historial",
+  name: "MasDatos",
   mixins: [Data],
   data() {
     return {
@@ -147,9 +137,6 @@ export default {
     dateFormat(value) {
       return moment(value).format("DD/MM/YYYY");
     },
-    print() {
-      this.$htmlToPaper("printMe");
-    },
     buscarRegistros() {
       makeToast("Mostrando registros...", "success");
 
@@ -157,10 +144,11 @@ export default {
         id_vehiculo: this.id_vehiculo,
         desde: this.desde,
         hasta: this.hasta,
-        cumplimentado: 0
+        cumplimentado: 1
       };
       this.getData("reporte/historial", payload).then((response) => {
         this.items = response;
+        console.log(JSON.stringify(this.items));
       });
     },
   },

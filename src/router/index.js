@@ -13,6 +13,7 @@ import Tareas from "../views/vehiculos/Tareas";
 import Preventivo from "../views/mantenimiento/Preventivo";
 import Correctivo from "../views/mantenimiento/Correctivo";
 import Agenda from "../views/mantenimiento/Agenda";
+import MasDatos from "../views/mantenimiento/MasDatos";
 import Flota from "../views/reportes/Flota";
 import Garantia from "../views/reportes/Garantia";
 import Historial from "../views/reportes/Historial";
@@ -93,6 +94,12 @@ const routes = [
     name: "agendaPreventivo",
     component: Agenda,
     meta: { opcion: 15 },
+  },
+  {
+    path: "/preventivo/masdatos",
+    name: "masDatos",
+    component: MasDatos,
+    meta: { opcion: 23 },
   },
   {
     path: "/correctivo/actividades",
