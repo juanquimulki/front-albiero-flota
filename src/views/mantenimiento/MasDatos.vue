@@ -79,7 +79,57 @@
     </b-card>
 
     <b-modal v-model="modalFacturasShow" title="Facturas">
-      Modal Facturas
+      <b-form
+        @submit="onSubmitFactura"
+        v-if="formFacturasShow"
+        ref="formFacturas"
+      >
+        <b-form-group
+          label="Número:"
+          description="Número de la factura. Ej: 001-00012345."
+        >
+          <b-form-input
+            v-model="formFactura.numero"
+            required
+            maxlength="20"
+          ></b-form-input>
+        </b-form-group>
+
+        <b-form-group label="Proveedor:">
+          <b-form-select
+            v-model="formFactura.id_proveedor"
+            :options="proveedores"
+            required
+          ></b-form-select>
+        </b-form-group>
+
+        <b-form-group label="Monto:">
+          <b-form-input
+            type="number"
+            v-model="formFactura.monto"
+            required
+          ></b-form-input>
+        </b-form-group>
+      </b-form>
+
+      <div class="botoneraModal">
+        <b-button @click="guardarFactura" :disabled="btnGuardarFacturaDes"
+          >Guardar</b-button
+        >
+        <b-button
+          variant="danger"
+          :disabled="btnEliminarFacturaDes"
+          @click="eliminarFactura"
+          >Eliminar</b-button
+        >
+        <b-button
+          variant="outline-danger"
+          :disabled="btnNuevoFacturaDes"
+          @click="limpiarFactura"
+          >Nuevo</b-button
+        >
+      </div>
+
       <template #modal-footer>
         <b-button variant="outline-primary" @click="modalFacturasShow = false"
           >Cerrar</b-button
@@ -172,6 +222,19 @@ export default {
 
       modalFacturasShow: false,
       modalRepuestosShow: false,
+
+      formFacturasShow: true,
+      formFactura: {
+        id: null,
+        id_preventivo: null,
+        numero: null,
+        id_proveedor: null,
+        monto: null,
+      },
+      proveedores: [],
+      btnGuardarFacturaDes: false,
+      btnEliminarFacturaDes: true,
+      btnNuevoFacturaDes: false,
     };
   },
   methods: {
@@ -192,11 +255,56 @@ export default {
         console.log(JSON.stringify(this.items));
       });
     },
-    modalFacturas() {
+    modalFacturas(row) {
+      this.formFactura.id_preventivo = row.id;
       this.modalFacturasShow = true;
     },
     modalRepuestos() {
       this.modalRepuestosShow = true;
+    },
+    guardarFactura() {
+      this.$refs.formFacturas.requestSubmit();
+    },
+    onSubmitFactura(evt) {
+      evt.preventDefault();
+
+      if (this.formFactura.id) {
+        this.updateFactura();
+      } else {
+        this.insertFactura();
+      }
+    },
+    insertFactura() {
+      this.postData("preventivo/factura", this.formFactura)
+        .then(() => {
+          makeToast("¡Se ha guardado el registro!", "success");
+          this.limpiarFactura();
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    },
+    update() {
+      this.patchData("factura", this.formFactura)
+        .then(() => {
+          makeToast("¡Se ha actualizado el registro!", "success");
+          this.limpiarFactura();
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    },
+    eliminarFactura() {},
+    limpiarFactura() {
+      this.formFactura = {
+        numero: null,
+        id_proveedor: null,
+        monto: null,
+      };
+      this.formFacturaShow = false;
+      this.$nextTick(() => {
+        this.formFacturaShow = true;
+      });
     },
   },
   filters: {
@@ -221,6 +329,12 @@ export default {
 
     this.desde = moment().format("YYYY-MM-DD");
     this.hasta = moment().format("YYYY-MM-DD");
+
+    this.getData("proveedor", null).then((response) => {
+      this.proveedores = response.map((x) => {
+        return { value: x.id, text: x.razon_social };
+      });
+    });
   },
 };
 </script>
@@ -231,5 +345,13 @@ export default {
 }
 .tituloReporte {
   display: none;
+}
+
+.botoneraModal {
+  text-align: right;
+}
+.botoneraModal button {
+  margin-left: 5px;
+  margin-bottom: 5px;
 }
 </style>
