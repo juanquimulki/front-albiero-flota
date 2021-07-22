@@ -84,6 +84,13 @@
         v-if="formFacturasShow"
         ref="formFacturas"
       >
+        <b-form-group label="id_tarea:">
+          <b-form-input v-model="formFactura.id_tarea"></b-form-input>
+        </b-form-group>
+        <b-form-group label="mantenimiento:">
+          <b-form-input v-model="formFactura.mantenimiento"></b-form-input>
+        </b-form-group>
+
         <b-form-group
           label="Número:"
           description="Número de la factura. Ej: 001-00012345."
@@ -106,6 +113,7 @@
         <b-form-group label="Monto:">
           <b-form-input
             type="number"
+            step=".01"
             v-model="formFactura.monto"
             required
           ></b-form-input>
@@ -129,6 +137,9 @@
           >Nuevo</b-button
         >
       </div>
+
+      <br />
+      <b-table :items="itemsFacturas" :fields="fieldsFacturas"> </b-table>
 
       <template #modal-footer>
         <b-button variant="outline-primary" @click="modalFacturasShow = false"
@@ -226,7 +237,8 @@ export default {
       formFacturasShow: true,
       formFactura: {
         id: null,
-        id_preventivo: null,
+        id_tarea: null,
+        mantenimiento: null,
         numero: null,
         id_proveedor: null,
         monto: null,
@@ -235,6 +247,22 @@ export default {
       btnGuardarFacturaDes: false,
       btnEliminarFacturaDes: true,
       btnNuevoFacturaDes: false,
+
+      itemsFacturas: [],
+      fieldsFacturas: [
+        {
+          key: "numero",
+          label: "Número",
+        },
+        {
+          key: "id_proveedor",
+          label: "Proveedor",
+        },
+        {
+          key: "monto",
+          label: "Monto",
+        },
+      ],
     };
   },
   methods: {
@@ -252,11 +280,16 @@ export default {
       };
       this.getData("reporte/historial", payload).then((response) => {
         this.items = response;
-        console.log(JSON.stringify(this.items));
       });
     },
     modalFacturas(row) {
-      this.formFactura.id_preventivo = row.id;
+      this.formFactura.id_tarea = row.id;
+      this.formFactura.mantenimiento = row.mantenimiento;
+
+      this.getData("preventivo/factura", null).then((response) => {
+        this.itemsFacturas = response;
+      });
+
       this.modalFacturasShow = true;
     },
     modalRepuestos() {
@@ -297,6 +330,9 @@ export default {
     eliminarFactura() {},
     limpiarFactura() {
       this.formFactura = {
+        id: null,
+        // id_tarea: null,
+        // mantenimiento: null,
         numero: null,
         id_proveedor: null,
         monto: null,
