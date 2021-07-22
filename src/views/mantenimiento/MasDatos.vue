@@ -1,8 +1,6 @@
 <template>
   <div>
-    <h4>
-      Más Datos (para cumplimentaciones)
-    </h4>
+    <h4>Más Datos (para cumplimentaciones)</h4>
     <br />
 
     <b-card>
@@ -37,31 +35,67 @@
     </b-card>
 
     <b-card>
-        <b-table :items="items" :fields="fields" responsive>
-          <template #cell(resultado)="row">
-            <b-badge
-              v-if="row.item.resultado == 'CUMPLIMENTADO'"
-              pill
-              variant="primary"
-              >{{ row.item.resultado }}</b-badge
-            >
-            <b-badge v-else pill variant="danger">{{
-              row.item.resultado
-            }}</b-badge>
-          </template>
-          <template #cell(mantenimiento)="row">
-            <b-badge
-              v-if="row.item.mantenimiento == 'PREVENTIVO'"
-              variant="warning"
-              >{{ row.item.mantenimiento }}</b-badge
-            >
-            <b-badge v-else variant="success">{{
-              row.item.mantenimiento
-            }}</b-badge>
-          </template>
-        </b-table>
+      <b-table :items="items" :fields="fields" responsive>
+        <template #cell(resultado)="row">
+          <b-badge
+            v-if="row.item.resultado == 'CUMPLIMENTADO'"
+            pill
+            variant="primary"
+            >{{ row.item.resultado }}</b-badge
+          >
+          <b-badge v-else pill variant="danger">{{
+            row.item.resultado
+          }}</b-badge>
+        </template>
+        <template #cell(mantenimiento)="row">
+          <b-badge
+            v-if="row.item.mantenimiento == 'PREVENTIVO'"
+            variant="warning"
+            >{{ row.item.mantenimiento }}</b-badge
+          >
+          <b-badge v-else variant="success">{{
+            row.item.mantenimiento
+          }}</b-badge>
+        </template>
+        <template #cell(actions)="row">
+          <b-button
+            size="sm"
+            @click="modalFacturas(row.item)"
+            class="mr-1"
+            variant="outline-primary"
+          >
+            Facturas
+          </b-button>
+          <b-button
+            size="sm"
+            @click="modalRepuestos(row.item)"
+            class="mr-1"
+            variant="outline-success"
+          >
+            Repuestos
+          </b-button>
+        </template>
+      </b-table>
     </b-card>
-    </div>
+
+    <b-modal v-model="modalFacturasShow" title="Facturas">
+      Modal Facturas
+      <template #modal-footer>
+        <b-button variant="outline-primary" @click="modalFacturasShow = false"
+          >Cerrar</b-button
+        >
+      </template>
+    </b-modal>
+
+    <b-modal v-model="modalRepuestosShow" title="Repuestos">
+      Modal Repuestos
+      <template #modal-footer>
+        <b-button variant="outline-primary" @click="modalRepuestosShow = false"
+          >Cerrar</b-button
+        >
+      </template>
+    </b-modal>
+  </div>
 </template>
 
 <script>
@@ -130,7 +164,14 @@ export default {
           key: "mantenimiento",
           label: "Mantenimiento",
         },
+        {
+          key: "actions",
+          label: "Acciones",
+        },
       ],
+
+      modalFacturasShow: false,
+      modalRepuestosShow: false,
     };
   },
   methods: {
@@ -144,12 +185,18 @@ export default {
         id_vehiculo: this.id_vehiculo,
         desde: this.desde,
         hasta: this.hasta,
-        cumplimentado: 1
+        cumplimentado: 1,
       };
       this.getData("reporte/historial", payload).then((response) => {
         this.items = response;
         console.log(JSON.stringify(this.items));
       });
+    },
+    modalFacturas() {
+      this.modalFacturasShow = true;
+    },
+    modalRepuestos() {
+      this.modalRepuestosShow = true;
     },
   },
   filters: {

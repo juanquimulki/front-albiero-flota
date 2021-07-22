@@ -157,7 +157,7 @@ export default {
         id_vehiculo: this.id_vehiculo,
         desde: this.desde,
         hasta: this.hasta,
-        cumplimentado: 0
+        cumplimentado: 0,
       };
       this.getData("reporte/historial", payload).then((response) => {
         this.items = response;
