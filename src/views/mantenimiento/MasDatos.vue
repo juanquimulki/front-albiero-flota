@@ -139,7 +139,24 @@
       </div>
 
       <br />
-      <b-table :items="itemsFacturas" :fields="fieldsFacturas"> </b-table>
+      <b-table
+        :items="itemsFacturas"
+        :fields="fieldsFacturas"
+        striped
+        hover
+        outlined
+        small
+        selectable
+        select-mode="single"
+        ref="selectableTableFacturas"
+        @row-selected="onRowSelectedFacturas"
+      >
+        <template #cell(monto)="row">
+          {{ row.item.monto | formatMoneda }}
+        </template>
+      </b-table>
+
+      <strong>Total: {{ totalFacturas | formatMoneda }}</strong>
 
       <template #modal-footer>
         <b-button variant="outline-primary" @click="modalFacturasShow = false"
@@ -255,17 +272,21 @@ export default {
           label: "Número",
         },
         {
-          key: "id_proveedor",
+          key: "proveedor.razon_social",
           label: "Proveedor",
         },
         {
           key: "monto",
           label: "Monto",
+          formatter: "formatMoneda",
         },
       ],
+
+      totalFacturas: 0,
     };
   },
   methods: {
+    onRowSelectedFacturas() {},
     dateFormat(value) {
       return moment(value).format("DD/MM/YYYY");
     },
@@ -282,13 +303,22 @@ export default {
         this.items = response;
       });
     },
+    buscarRegistrosFacturas() {
+      let payload = {
+        id_tarea: this.formFactura.id_tarea,
+      };
+      this.getData("preventivo/factura", payload).then((response) => {
+        this.itemsFacturas = response;
+        this.totalFacturas = this.itemsFacturas.reduce(function (acc, obj) {
+          return acc + parseFloat(obj.monto);
+        }, 0);
+      });
+    },
     modalFacturas(row) {
       this.formFactura.id_tarea = row.id;
       this.formFactura.mantenimiento = row.mantenimiento;
 
-      this.getData("preventivo/factura", null).then((response) => {
-        this.itemsFacturas = response;
-      });
+      this.buscarRegistrosFacturas();
 
       this.modalFacturasShow = true;
     },
@@ -311,6 +341,7 @@ export default {
       this.postData("preventivo/factura", this.formFactura)
         .then(() => {
           makeToast("¡Se ha guardado el registro!", "success");
+          this.buscarRegistrosFacturas();
           this.limpiarFactura();
         })
         .catch((e) => {
@@ -347,6 +378,12 @@ export default {
     dateFormat(value) {
       return moment(value).format("DD/MM/YYYY");
     },
+    formatMoneda(val) {
+      return new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+      }).format(val);
+    },
   },
   created() {
     this.getData("vehiculo", null).then((response) => {
@@ -363,7 +400,7 @@ export default {
       this.id_vehiculo = 0;
     });
 
-    this.desde = moment().format("YYYY-MM-DD");
+    this.desde = "2021-01-01"; //moment().format("YYYY-MM-DD");
     this.hasta = moment().format("YYYY-MM-DD");
 
     this.getData("proveedor", null).then((response) => {
