@@ -8,15 +8,9 @@
       @show="doSomethingOnShow"
     >
       <b-form @submit="onSubmit" v-if="formShow" ref="form">
-        <b-form-group label="id">
-          <b-form-input v-model="form.id"></b-form-input>
-        </b-form-group>
-        <b-form-group label="id_tarea:">
-          <b-form-input v-model="id_tarea"></b-form-input>
-        </b-form-group>
-        <b-form-group label="mantenimiento:">
-          <b-form-input v-model="mantenimiento"></b-form-input>
-        </b-form-group>
+        <input :value="form.id" type="hidden" />
+        <input :value="id_tarea" type="hidden" />
+        <input :value="mantenimiento" type="hidden" />
 
         <b-form-group
           label="Número:"
@@ -173,7 +167,12 @@ export default {
       let payload = {
         id_tarea: this.id_tarea,
       };
-      this.getData("preventivo/factura", payload).then((response) => {
+
+      let endpoint =
+        this.mantenimiento == "PREVENTIVO"
+          ? "preventivo/factura"
+          : "correctivo/factura";
+      this.getData(endpoint, payload).then((response) => {
         this.items = response;
         this.total = this.items.reduce(function (acc, obj) {
           return acc + parseFloat(obj.monto);
@@ -195,7 +194,11 @@ export default {
       }
     },
     insert() {
-      this.postData("preventivo/factura", this.form)
+      let endpoint =
+        this.mantenimiento == "PREVENTIVO"
+          ? "preventivo/factura"
+          : "correctivo/factura";
+      this.postData(endpoint, this.form)
         .then(() => {
           makeToast("¡Se ha guardado el registro!", "success");
           this.buscarRegistros();
@@ -206,7 +209,11 @@ export default {
         });
     },
     update() {
-      this.patchData("preventivo/factura", this.form)
+      let endpoint =
+        this.mantenimiento == "PREVENTIVO"
+          ? "preventivo/factura"
+          : "correctivo/factura";
+      this.patchData(endpoint, this.form)
         .then(() => {
           makeToast("¡Se ha actualizado el registro!", "success");
           this.buscarRegistros();
@@ -217,7 +224,11 @@ export default {
         });
     },
     eliminar() {
-      this.deleteData("preventivo/factura", this.form)
+      let endpoint =
+        this.mantenimiento == "PREVENTIVO"
+          ? "preventivo/factura"
+          : "correctivo/factura";
+      this.deleteData(endpoint, this.form)
         .then(() => {
           makeToast("¡Se ha eliminado el registro!", "success");
           this.buscarRegistros();
