@@ -1,17 +1,16 @@
 <template>
   <div>
     <b-modal
-      v-model="show"
+      v-model="showModal"
       close="close"
       title="Facturas"
       @hide="doSomethingOnHidden"
       @show="doSomethingOnShow"
     >
-      <b-form
-        @submit="onSubmitFactura"
-        v-if="formFacturasShow"
-        ref="formFacturas"
-      >
+      <b-form @submit="onSubmit" v-if="formShow" ref="form">
+        <b-form-group label="id">
+          <b-form-input v-model="form.id"></b-form-input>
+        </b-form-group>
         <b-form-group label="id_tarea:">
           <b-form-input v-model="id_tarea"></b-form-input>
         </b-form-group>
@@ -24,15 +23,23 @@
           description="Número de la factura. Ej: 001-00012345."
         >
           <b-form-input
-            v-model="formFactura.numero"
+            v-model="form.numero"
             required
             maxlength="20"
           ></b-form-input>
         </b-form-group>
 
+        <b-form-group label="Fecha:" description="Fecha de la factura.">
+          <b-form-input
+            v-model="form.fecha"
+            type="date"
+            required
+          ></b-form-input>
+        </b-form-group>
+
         <b-form-group label="Proveedor:">
           <b-form-select
-            v-model="formFactura.id_proveedor"
+            v-model="form.id_proveedor"
             :options="proveedores"
             required
           ></b-form-select>
@@ -42,49 +49,47 @@
           <b-form-input
             type="number"
             step=".01"
-            v-model="formFactura.monto"
+            v-model="form.monto"
             required
           ></b-form-input>
         </b-form-group>
       </b-form>
 
       <div class="botoneraModal">
-        <b-button @click="guardarFactura" :disabled="btnGuardarFacturaDes"
-          >Guardar</b-button
-        >
-        <b-button
-          variant="danger"
-          :disabled="btnEliminarFacturaDes"
-          @click="eliminarFactura"
+        <b-button @click="guardar" :disabled="btnGuardarDes">Guardar</b-button>
+        <b-button variant="danger" :disabled="btnEliminarDes" @click="eliminar"
           >Eliminar</b-button
         >
         <b-button
           variant="outline-danger"
-          :disabled="btnNuevoFacturaDes"
-          @click="limpiarFactura"
+          :disabled="btnNuevoDes"
+          @click="limpiar"
           >Nuevo</b-button
         >
       </div>
 
       <br />
       <b-table
-        :items="itemsFacturas"
-        :fields="fieldsFacturas"
+        :items="items"
+        :fields="fields"
         striped
         hover
         outlined
         small
         selectable
         select-mode="single"
-        ref="selectableTableFacturas"
-        @row-selected="onRowSelectedFacturas"
+        ref="selectableTable"
+        @row-selected="onRowSelected"
       >
+        <template #cell(fecha)="row">
+          {{ row.item.fecha | dateFormat }}
+        </template>
         <template #cell(monto)="row">
           {{ row.item.monto | formatMoneda }}
         </template>
       </b-table>
 
-      <strong>Total: {{ totalFacturas | formatMoneda }}</strong>
+      <strong>Total: {{ total | formatMoneda }}</strong>
 
       <template #modal-footer>
         <b-button variant="outline-primary" @click="close">Cerrar</b-button>
@@ -105,25 +110,37 @@ export default {
   mixins: [Data],
   data() {
     return {
-      formFacturasShow: true,
-      formFactura: {
+      showModal: false,
+      formShow: true,
+
+      form: {
         id: null,
         id_tarea: null,
         mantenimiento: null,
         numero: null,
+        fecha: null,
         id_proveedor: null,
         monto: null,
       },
-      proveedores: [],
-      btnGuardarFacturaDes: false,
-      btnEliminarFacturaDes: true,
-      btnNuevoFacturaDes: false,
 
-      itemsFacturas: [],
-      fieldsFacturas: [
+      proveedores: [],
+
+      btnGuardarDes: false,
+      btnEliminarDes: true,
+      btnNuevoDes: false,
+
+      selected: false,
+
+      items: [],
+      fields: [
         {
           key: "numero",
           label: "Número",
+        },
+        {
+          key: "fecha",
+          label: "Fecha",
+          formatter: "dateFormat",
         },
         {
           key: "proveedor.razon_social",
@@ -136,72 +153,95 @@ export default {
         },
       ],
 
-      totalFacturas: 0,
+      total: 0,
     };
   },
   methods: {
     close() {
+      this.showModal = false;
       this.$emit("estado", false);
     },
-    onRowSelectedFacturas() {},
-    buscarRegistrosFacturas() {
+    onRowSelected(item) {
+      if (item[0]) {
+        Object.assign(this.form, item[0]);
+        this.selected = true;
+      } else {
+        this.selected = false;
+      }
+    },
+    buscarRegistros() {
       let payload = {
         id_tarea: this.id_tarea,
       };
       this.getData("preventivo/factura", payload).then((response) => {
-        this.itemsFacturas = response;
-        this.totalFacturas = this.itemsFacturas.reduce(function (acc, obj) {
+        this.items = response;
+        this.total = this.items.reduce(function (acc, obj) {
           return acc + parseFloat(obj.monto);
         }, 0);
       });
     },
-    guardarFactura() {
-      this.$refs.formFacturas.requestSubmit();
+    guardar() {
+      this.$refs.form.requestSubmit();
     },
-    onSubmitFactura(evt) {
+    onSubmit(evt) {
       evt.preventDefault();
 
-      if (this.formFactura.id) {
-        this.updateFactura();
+      this.form.id_tarea = this.id_tarea;
+
+      if (this.form.id) {
+        this.update();
       } else {
-        this.insertFactura();
+        this.insert();
       }
     },
-    insertFactura() {
-      this.postData("preventivo/factura", this.formFactura)
+    insert() {
+      this.postData("preventivo/factura", this.form)
         .then(() => {
           makeToast("¡Se ha guardado el registro!", "success");
-          this.buscarRegistrosFacturas();
-          this.limpiarFactura();
+          this.buscarRegistros();
+          this.limpiar();
         })
         .catch((e) => {
           console.log(e);
         });
     },
     update() {
-      this.patchData("factura", this.formFactura)
+      this.patchData("preventivo/factura", this.form)
         .then(() => {
           makeToast("¡Se ha actualizado el registro!", "success");
-          this.limpiarFactura();
+          this.buscarRegistros();
+          this.limpiar();
         })
         .catch((e) => {
           console.log(e);
         });
     },
-    eliminarFactura() {},
-    limpiarFactura() {
-      this.formFactura = {
+    eliminar() {
+      this.deleteData("preventivo/factura", this.form)
+        .then(() => {
+          makeToast("¡Se ha eliminado el registro!", "success");
+          this.buscarRegistros();
+          this.limpiar();
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    },
+    limpiar() {
+      this.form = {
         id: null,
         // id_tarea: null,
         // mantenimiento: null,
+        fecha: null,
         numero: null,
         id_proveedor: null,
         monto: null,
       };
-      this.formFacturaShow = false;
+      this.formShow = false;
       this.$nextTick(() => {
-        this.formFacturaShow = true;
+        this.formShow = true;
       });
+      this.$refs.selectableTable.clearSelected();
     },
     doSomethingOnHidden() {
       //do something
@@ -214,7 +254,7 @@ export default {
           return { value: x.id, text: x.razon_social };
         });
       });
-      this.buscarRegistrosFacturas();
+      this.buscarRegistros();
     },
   },
   filters: {
@@ -226,6 +266,14 @@ export default {
         style: "currency",
         currency: "USD",
       }).format(val);
+    },
+  },
+  watch: {
+    selected(valor) {
+      this.btnEliminarDes = !valor;
+    },
+    show(valor) {
+      this.showModal = valor;
     },
   },
 };
