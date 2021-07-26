@@ -97,7 +97,7 @@ const routes = [
   },
   {
     path: "/preventivo/masdatos",
-    name: "masDatos",
+    name: "masDatosPreventivo",
     component: MasDatos,
     meta: { opcion: 23 },
   },
@@ -112,6 +112,12 @@ const routes = [
     name: "agendaCorrectivo",
     component: Agenda,
     meta: { opcion: 18 },
+  },
+  {
+    path: "/correctivo/masdatos",
+    name: "masDatosCorrectivo",
+    component: MasDatos,
+    meta: { opcion: 24 },
   },
   {
     path: "/reportes/flota",

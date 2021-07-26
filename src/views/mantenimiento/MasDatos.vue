@@ -68,7 +68,7 @@
           </b-button>
           <b-button
             size="sm"
-            @click="modalRepuestos(row.item)"
+            @click="modalRepuestos(true, row.item)"
             class="mr-1"
             variant="outline-success"
           >
@@ -84,6 +84,12 @@
       :mantenimiento="mantenimiento"
       @estado="modalFacturas"
     ></ModalFacturas>
+    <ModalRepuestos
+      :show="modalRepuestosShow"
+      :id_tarea="id_tarea"
+      :mantenimiento="mantenimiento"
+      @estado="modalRepuestos"
+    ></ModalRepuestos>
   </div>
 </template>
 
@@ -94,11 +100,12 @@ import moment from "moment";
 import makeToast from "../../common/toast";
 
 import ModalFacturas from "./ModalFacturas.vue";
+import ModalRepuestos from "./ModalRepuestos.vue";
 
 export default {
   name: "MasDatos",
   mixins: [Data],
-  components: { ModalFacturas },
+  components: { ModalFacturas, ModalRepuestos },
   data() {
     return {
       endpoint: "vehiculo",
@@ -196,8 +203,12 @@ export default {
       }
       this.modalFacturasShow = estado;
     },
-    modalRepuestos() {
-      this.modalRepuestosShow = true;
+    modalRepuestos(estado, row) {
+      if (estado) {
+        this.id_tarea = row.id;
+        this.mantenimiento = row.mantenimiento;
+      }
+      this.modalRepuestosShow = estado;
     },
   },
   filters: {
