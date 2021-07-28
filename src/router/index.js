@@ -17,6 +17,7 @@ import MasDatos from "../views/mantenimiento/MasDatos";
 import Flota from "../views/reportes/Flota";
 import Garantia from "../views/reportes/Garantia";
 import Historial from "../views/reportes/Historial";
+import Gastos from "../views/reportes/Gastos";
 import Clave from "../views/usuarios/Clave";
 import Usuarios from "../views/usuarios/Usuarios";
 
@@ -136,6 +137,12 @@ const routes = [
     name: "historial",
     component: Historial,
     meta: { opcion: 20 },
+  },
+  {
+    path: "/reportes/gastos",
+    name: "gastos",
+    component: Gastos,
+    meta: { opcion: 25 },
   },
   {
     path: "/usuarios/usuarios",
