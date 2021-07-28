@@ -231,7 +231,7 @@ export default {
       this.id_vehiculo = 0;
     });
 
-    this.desde = "2021-01-01"; //moment().format("YYYY-MM-DD");
+    this.desde = moment().format("YYYY-MM-DD");
     this.hasta = moment().format("YYYY-MM-DD");
   },
 };
