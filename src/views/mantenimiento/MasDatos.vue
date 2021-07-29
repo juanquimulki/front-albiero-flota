@@ -63,16 +63,18 @@
             @click="modalFacturas(true, row.item)"
             class="mr-1"
             variant="outline-primary"
+            title="Facturas"
           >
-            Facturas
+            <b-icon icon="card-heading"></b-icon>
           </b-button>
           <b-button
             size="sm"
             @click="modalRepuestos(true, row.item)"
             class="mr-1"
             variant="outline-success"
+            title="Repuestos"
           >
-            Repuestos
+            <b-icon icon="gear-wide-connected"></b-icon>
           </b-button>
         </template>
       </b-table>
@@ -125,6 +127,10 @@ export default {
         {
           key: "abrev",
           label: "Chofer",
+        },
+        {
+          key: "patente",
+          label: "Patente",
         },
         {
           key: "parte",
