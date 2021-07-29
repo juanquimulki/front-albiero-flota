@@ -104,6 +104,10 @@ export default {
           label: "Chofer",
         },
         {
+          key: "patente",
+          label: "Patente",
+        },
+        {
           key: "parte",
           label: "Parte",
         },

@@ -73,7 +73,9 @@
           </template>
         </b-table>
 
-        <div class="total"><strong>Total: {{ total | formatMoneda }}</strong></div>
+        <div class="total">
+          <strong>Total: {{ total | formatMoneda }}</strong>
+        </div>
       </div>
     </b-card>
   </div>
