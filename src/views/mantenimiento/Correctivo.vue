@@ -337,7 +337,10 @@ export default {
 
     this.getData("vehiculo", null).then((response) => {
       this.vehiculos = response.map((x) => {
-        return { value: x.id, text: `${x.descripcion} (${x.alias})` };
+        return {
+          value: x.id,
+          text: `${x.patente} - ${x.descripcion} (${x.alias})`,
+        };
       });
     });
     this.getData("tarea", null).then((response) => {
