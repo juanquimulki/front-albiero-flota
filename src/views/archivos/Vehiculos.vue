@@ -172,6 +172,23 @@
             </div>
 
             <div class="content-card">
+              <b-row>
+                <b-col cols="12" sm="12" md="6" lg="6" xl="6"> </b-col>
+                <b-col cols="12" sm="12" md="6" lg="6" xl="6">
+                  <b-input-group size="sm" style="margin-bottom: 5px">
+                    <b-input-group-prepend is-text>
+                      <b-icon icon="search"></b-icon>
+                    </b-input-group-prepend>
+                    <b-form-input
+                      v-model="filter"
+                      type="search"
+                      id="filterInput"
+                      placeholder="Escribí para buscar..."
+                    ></b-form-input>
+                  </b-input-group>
+                </b-col>
+              </b-row>
+
               <b-table
                 striped
                 hover
@@ -183,7 +200,17 @@
                 select-mode="single"
                 ref="selectableTable"
                 @row-selected="onRowSelected"
+                :per-page="perPage"
+                :current-page="currentPage"
+                :filter="filter"
+                :filterOn="filterOn"
               ></b-table>
+              <b-pagination
+                v-model="currentPage"
+                :total-rows="rows"
+                :per-page="perPage"
+                aria-controls="my-table"
+              ></b-pagination>
             </div>
           </b-card>
         </b-overlay>
@@ -210,6 +237,9 @@ export default {
       endpoint: "vehiculo",
       registros: [],
 
+      currentPage: 1,
+      perPage: 10,
+
       vehiculos_tipos: [],
       choferes: [],
       combustible_tipos: [],
@@ -220,18 +250,21 @@ export default {
           label: "#",
         },
         {
-          key: "descripcion",
-          label: "Descripción",
+          key: "patente",
+          label: "Patente",
         },
         {
           key: "alias",
           label: "Alias",
         },
         {
-          key: "patente",
-          label: "Patente",
+          key: "descripcion",
+          label: "Descripción",
         },
       ],
+
+      filter: "",
+      filterOn: ["patente", "alias", "descripcon"],
 
       form: {
         id: null,
@@ -402,6 +435,11 @@ export default {
   watch: {
     selected(valor) {
       this.btnEliminarDes = !valor;
+    },
+  },
+  computed: {
+    rows() {
+      return this.registros.length;
     },
   },
 };
