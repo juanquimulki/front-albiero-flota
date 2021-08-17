@@ -23,6 +23,9 @@ const options = {
 import VueHtmlToPaper from "vue-html-to-paper";
 Vue.use(VueHtmlToPaper, options);
 
+import excel from "vue-excel-export";
+Vue.use(excel);
+
 Vue.config.productionTip = false;
 
 import VueSession from "vue-session";

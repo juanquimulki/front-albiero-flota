@@ -16,23 +16,30 @@
             ></b-form-select>
           </b-form-group>
         </b-col>
-        <b-col cols="12" sm="12" md="4" lg="3" xl="3">
+        <b-col cols="12" sm="12" md="4" lg="3" xl="2">
           <b-form-group label="Desde:">
             <b-form-input type="date" v-model="desde" required></b-form-input>
           </b-form-group>
         </b-col>
-        <b-col cols="12" sm="12" md="4" lg="3" xl="3">
+        <b-col cols="12" sm="12" md="4" lg="3" xl="2">
           <b-form-group label="Hasta:">
             <b-form-input type="date" v-model="hasta" required></b-form-input>
           </b-form-group>
         </b-col>
-        <b-col cols="12" sm="12" md="6" lg="3" xl="3">
+        <b-col cols="12" sm="12" md="6" lg="3" xl="5">
           <div class="botonera">
             <b-button @click="buscarRegistros" variant="info"
               ><b-icon icon="search"></b-icon>&nbsp;Consultar</b-button
             >&nbsp;
             <b-button @click="print" variant="success"
               ><b-icon-file-text></b-icon-file-text>&nbsp;Imprimir</b-button
+            >
+            <export-excel
+              :data="items"
+              :fields="excelFields"
+              class="btn btn-default"
+              name="Reporte Historial.xls"
+              ><b-button>Exportar</b-button></export-excel
             >
           </div>
         </b-col>
@@ -145,6 +152,21 @@ export default {
           label: "Mantenimiento",
         },
       ],
+
+      excelFields: {
+        Vehiculo: "descripcion",
+        Chofer: "abrev",
+        Patente: "patente",
+        Parte: "parte",
+        Tarea: "tarea",
+        DetallesMantenimiento: "detallesMantenimiento",
+        Resultado: "resultado",
+        Usuario: "user",
+        Fecha: "fecha",
+        Kilometros: "kilometros",
+        DetallesTarea: "detallesTarea",
+        Mantenimiento: "mantenimiento",
+      },
     };
   },
   methods: {
