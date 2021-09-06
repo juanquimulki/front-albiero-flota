@@ -133,6 +133,29 @@
                   </b-form-group>
                 </b-col>
               </b-row>
+
+              <b-row>
+                <b-col cols="12" sm="12" md="12" lg="6" xl="6">
+                  <b-form-group label="Estado:">
+                    <b-form-select
+                      v-model="form.id_estado"
+                      :options="vehiculos_estados"
+                      required
+                    ></b-form-select>
+                  </b-form-group>
+                </b-col>
+                <b-col cols="12" sm="12" md="12" lg="6" xl="6">
+                  <b-form-group
+                    label="Desde:"
+                    description="Fecha del último estado del vehículo."
+                  >
+                    <b-form-input
+                      v-model="form.estado_desde"
+                      type="date"
+                    ></b-form-input>
+                  </b-form-group>
+                </b-col>
+              </b-row>
             </b-form>
 
             <div class="botonera">
@@ -277,6 +300,8 @@ export default {
         fecha_venc_gtia: null,
         kms_venc_gtia: null,
         id_chofer: null,
+        id_estado: null,
+        estado_desde: null,
       },
       formShow: true,
       showOverlay: false,
@@ -391,6 +416,8 @@ export default {
         fecha_venc_gtia: null,
         kms_venc_gtia: null,
         id_chofer: null,
+        id_estado: null,
+        estado_desde: null,
       };
       this.kilometraje = "";
       this.formShow = false;
@@ -429,6 +456,11 @@ export default {
     this.getData("combustibletipo", null).then((response) => {
       this.combustible_tipos = response.map((x) => {
         return { value: x.id, text: x.tipo };
+      });
+    });
+    this.getData("vehiculoestado", null).then((response) => {
+      this.vehiculos_estados = response.map((x) => {
+        return { value: x.id, text: x.estado };
       });
     });
   },

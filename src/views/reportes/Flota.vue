@@ -63,6 +63,10 @@ export default {
           key: "chofer.apenom",
           label: "Chofer",
         },
+        {
+          key: "estado.estado",
+          label: "Estado",
+        },
       ],
     };
   },
