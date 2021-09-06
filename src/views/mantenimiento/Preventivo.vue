@@ -56,10 +56,41 @@
               <b-row>
                 <b-col cols="12" sm="12" md="6" lg="6" xl="6">
                   <b-form-group label="Cada ... días:">
-                    <b-form-input
-                      v-model="form.frecuenciaDias"
-                      type="number"
-                    ></b-form-input>
+                    <b-input-group>
+                      <b-form-input
+                        v-model="form.frecuenciaDias"
+                        type="number"
+                      ></b-form-input>
+
+                      <template #append>
+                        <b-dropdown text="Períodos" variant="secondary">
+                          <b-dropdown-item @click="setearPeriodo(7)"
+                            >1 semana</b-dropdown-item
+                          >
+                          <b-dropdown-item @click="setearPeriodo(30)"
+                            >1 mes</b-dropdown-item
+                          >
+                          <b-dropdown-item @click="setearPeriodo(180)"
+                            >6 meses</b-dropdown-item
+                          >
+                          <b-dropdown-item @click="setearPeriodo(365)"
+                            >1 año</b-dropdown-item
+                          >
+                          <b-dropdown-item @click="setearPeriodo(365 * 2)"
+                            >2 años</b-dropdown-item
+                          >
+                          <b-dropdown-item @click="setearPeriodo(365 * 3)"
+                            >3 años</b-dropdown-item
+                          >
+                          <b-dropdown-item @click="setearPeriodo(365 * 5)"
+                            >5 años</b-dropdown-item
+                          >
+                          <b-dropdown-item @click="setearPeriodo(365 * 10)"
+                            >10 años</b-dropdown-item
+                          >
+                        </b-dropdown>
+                      </template>
+                    </b-input-group>
                   </b-form-group>
                 </b-col>
                 <b-col cols="12" sm="12" md="6" lg="6" xl="6">
@@ -250,6 +281,9 @@ export default {
     };
   },
   methods: {
+    setearPeriodo(valor) {
+      this.form.frecuenciaDias = valor;
+    },
     guardar() {
       this.$refs.form.requestSubmit();
     },
