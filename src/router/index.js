@@ -14,6 +14,7 @@ import Preventivo from "../views/mantenimiento/Preventivo";
 import Correctivo from "../views/mantenimiento/Correctivo";
 import Agenda from "../views/mantenimiento/Agenda";
 import General from "../views/mantenimiento/General";
+import GeneralAgenda from "../views/mantenimiento/GeneralAgenda";
 import MasDatos from "../views/mantenimiento/MasDatos";
 import Flota from "../views/reportes/Flota";
 import Garantia from "../views/reportes/Garantia";
@@ -126,6 +127,12 @@ const routes = [
     name: "general",
     component: General,
     meta: { opcion: 27 },
+  },
+  {
+    path: "/general/agenda",
+    name: "generalAgenda",
+    component: GeneralAgenda,
+    meta: { opcion: 28 },
   },
   {
     path: "/reportes/flota",
