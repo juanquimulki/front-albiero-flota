@@ -13,6 +13,7 @@ import Tareas from "../views/vehiculos/Tareas";
 import Preventivo from "../views/mantenimiento/Preventivo";
 import Correctivo from "../views/mantenimiento/Correctivo";
 import Agenda from "../views/mantenimiento/Agenda";
+import General from "../views/mantenimiento/General";
 import MasDatos from "../views/mantenimiento/MasDatos";
 import Flota from "../views/reportes/Flota";
 import Garantia from "../views/reportes/Garantia";
@@ -119,6 +120,12 @@ const routes = [
     name: "masDatosCorrectivo",
     component: MasDatos,
     meta: { opcion: 24 },
+  },
+  {
+    path: "/general/actividades",
+    name: "general",
+    component: General,
+    meta: { opcion: 27 },
   },
   {
     path: "/reportes/flota",
